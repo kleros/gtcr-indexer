@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=./node_modules/envio/evm.schema.json
+name: gtcr-indexer
+networks:
+  - id: 100
+    start_block: 19592773
+    contracts:
+      - name: LightGTCRFactory
+        address:
+          - 0x08e58Bc26CFB0d346bABD253A1799866F269805a
+        handler: src/mappings/index.ts
+        events:
+          - event: NewGTCR(address indexed _address)
+      - name: LightGeneralizedTCR
+        handler: src/mappings/index.ts
+        events:
+          - event: ConnectedTCRSet(address indexed _connectedTCR)
+          - event: Contribution(bytes32 indexed _itemID, uint256 _requestID, uint256 _roundID, address indexed _contributor, uint256 _contribution, uint8 _side)
+          - event: Dispute(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _metaEvidenceID, uint256 _evidenceGroupID)
+          - event: Evidence(address indexed _arbitrator, uint256 indexed _evidenceGroupID, address indexed _party, string _evidence)
+          - event: ItemStatusChange(bytes32 indexed _itemID, bool _updatedDirectly)
+          - event: MetaEvidence(uint256 indexed _metaEvidenceID, string _evidence)
+          - event: NewItem(bytes32 indexed _itemID, string _data, bool _addedDirectly)
+          - event: RequestSubmitted(bytes32 indexed _itemID, uint256 _evidenceGroupID)
+          - event: RewardWithdrawn(address indexed _beneficiary, bytes32 indexed _itemID, uint256 _request, uint256 _round, uint256 _reward)
+          - event: Ruling(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _ruling)
+      - name: IArbitrator
+        handler: src/mappings/index.ts
+        events:
+          - event: AppealPossible(uint256 indexed _disputeID, address indexed _arbitrable)
+          - event: AppealDecision(uint256 indexed _disputeID, address indexed _arbitrable)
+
+unordered_multichain_mode: true
