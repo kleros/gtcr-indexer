@@ -7,7 +7,7 @@ const clients = chains.reduce<Record<number, PublicClient>>((acc, chain) => {
   acc[chain.id] = createPublicClient({
     chain,
     // TODO: provide more RPC's
-    transport: fallback([http(RPC_URL)], { retryCount: 3 }),
+    transport: fallback([http(RPC_URL, { batch: true })], { retryCount: 3 }),
     batch: {
       multicall: true,
     },
