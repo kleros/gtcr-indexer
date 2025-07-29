@@ -167,12 +167,6 @@ type LItem {
   latestRequester: Bytes!
   "The account that challenged the latest request, if any."
   latestChallenger: Bytes!
-  metadata: LItemMetadata
-}
-
-type LItemMetadata {
-  "ipfs cid - Litem ID"
-  id: ID!
   "The parsed data describing the item."
   props: [ItemProp!]! @derivedFrom(field: "item")
   "First indexable value of the json file."
@@ -196,7 +190,7 @@ type ItemProp {
   description: String!
   isIdentifier: Boolean!
   value: String
-  item: LItemMetadata!
+  item: LItem!
 }
 
 type LRequest {
