@@ -20,6 +20,7 @@ export const fetchItemData = experimental_createEffect(
       ipfsHash: S.string,
     },
     output: S.nullable(itemMetadataSchema),
+    cache: true,
   },
   async ({ input, context }) => {
     const { ipfsHash } = input;

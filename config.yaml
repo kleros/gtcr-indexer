@@ -21,6 +21,10 @@ networks:
           - event: MetaEvidence(uint256 indexed _metaEvidenceID, string _evidence)
           - event: NewItem(bytes32 indexed _itemID, string _data, bool _addedDirectly)
           - event: RequestSubmitted(bytes32 indexed _itemID, uint256 _evidenceGroupID)
+            field_selection:
+              transaction_fields:
+                - from
+                - hash
           - event: RewardWithdrawn(address indexed _beneficiary, bytes32 indexed _itemID, uint256 _request, uint256 _round, uint256 _reward)
           - event: Ruling(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _ruling)
       - name: IArbitrator

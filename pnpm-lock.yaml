@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       envio:
-        specifier: 2.25.0
-        version: 2.25.0(typescript@5.2.2)
+        specifier: 2.26.0
+        version: 2.26.0(typescript@5.2.2)
       viem:
         specifier: ^2.33.0
         version: 2.33.0(typescript@5.2.2)
@@ -302,28 +302,28 @@ packages:
   end-of-stream@1.4.5:
     resolution: {integrity: sha512-ooEGc6HP26xXq/N+GCGOT0JKCLDGrq2bQUZrQ7gyrJiZANJ/8YDTxTpQBXGMn+WbIQXNVpyWymm7KYVICQnyOg==}
 
-  envio-darwin-arm64@2.25.0:
-    resolution: {integrity: sha512-HWjnXdRd18fnnaseIwdEoO2MAJbnkQsKiTHiY+lNuGH9Guc2c86iNYFHsoq/zGE4WkrVk3SHcR9lVMvE/u/dzA==}
+  envio-darwin-arm64@2.26.0:
+    resolution: {integrity: sha512-lyGbPcwBoCtEaEEujC+74HlMYDQZNR607XuMIMvLLyPvL2kMImgn0rRXeuHoDBD/1KpdcDe3z3xXw6S/niOifA==}
     cpu: [arm64]
     os: [darwin]
 
-  envio-darwin-x64@2.25.0:
-    resolution: {integrity: sha512-sms3H58XT8t+Wl1+L8KS5Yo7zlReA0YVq27HTKBp1yy8vC4qBKazkzLDASQnhwTv+NYJfxgX6zcP4vm2h8ZJXQ==}
+  envio-darwin-x64@2.26.0:
+    resolution: {integrity: sha512-UFbjq9qlbdwmcAwheIRnrfg36T8JrMWwUmVGXkPUpA3vtcxGfbGnxisHe3EEvwQA1OU1xEDLMC8g9zlogdyxnA==}
     cpu: [x64]
     os: [darwin]
 
-  envio-linux-arm64@2.25.0:
-    resolution: {integrity: sha512-AAhTOR/EbnWb/Mi4/D54OZByMf13EKVLt8I3koQVQxO2nmANonyGfMyRFH+HcWqIssXqTEAwlGPim3Gh0znFdQ==}
+  envio-linux-arm64@2.26.0:
+    resolution: {integrity: sha512-dOYJbUivtuzqTUY1h1YIFFeHPQYmJanCUASoiiISLCAyt96oijLcivwJPdHGStt33ixXu1EsKx+j5h5ALn9AJA==}
     cpu: [arm64]
     os: [linux]
 
-  envio-linux-x64@2.25.0:
-    resolution: {integrity: sha512-IgeORIEpN++U0gwHOPRqcT/d2G0v/GM2fYo0w2uwduHsCyTXT7Z1Npo8aGvRPcifczrUBvzBEVbXbegQgdu3dg==}
+  envio-linux-x64@2.26.0:
+    resolution: {integrity: sha512-EV8rCDrCh9/0oNsMhvZdqi2rGLuWxcFn9QXGDkquZPtu4illECQeGYCdx5CFMVuNly9fEDbbzzwgED6y3ftDrA==}
     cpu: [x64]
     os: [linux]
 
-  envio@2.25.0:
-    resolution: {integrity: sha512-RHtCFHXxdMcd1agewkGFZxtuEzareXaPa7uahu+8KPl82sckhxlz0GOBcTG0pv5Teu/Zw85Xh2SQMKlqQewyBg==}
+  envio@2.26.0:
+    resolution: {integrity: sha512-iTf/SzbSviebtxPU64YbFG2OW4NlnuGRFj9BVZJCfGV/w7YHDXeCP+kaQCT15IYljnJoys8pYNuAdcL7tGJIQA==}
     hasBin: true
 
   escalade@3.2.0:
@@ -1021,19 +1021,19 @@ snapshots:
     dependencies:
       once: 1.4.0
 
-  envio-darwin-arm64@2.25.0:
+  envio-darwin-arm64@2.26.0:
     optional: true
 
-  envio-darwin-x64@2.25.0:
+  envio-darwin-x64@2.26.0:
     optional: true
 
-  envio-linux-arm64@2.25.0:
+  envio-linux-arm64@2.26.0:
     optional: true
 
-  envio-linux-x64@2.25.0:
+  envio-linux-x64@2.26.0:
     optional: true
 
-  envio@2.25.0(typescript@5.2.2):
+  envio@2.26.0(typescript@5.2.2):
     dependencies:
       '@envio-dev/hypersync-client': 0.6.5
       bignumber.js: 9.1.2
@@ -1044,10 +1044,10 @@ snapshots:
       rescript-schema: 9.3.0(rescript@11.1.3)
       viem: 2.21.0(typescript@5.2.2)
     optionalDependencies:
-      envio-darwin-arm64: 2.25.0
-      envio-darwin-x64: 2.25.0
-      envio-linux-arm64: 2.25.0
-      envio-linux-x64: 2.25.0
+      envio-darwin-arm64: 2.26.0
+      envio-darwin-x64: 2.26.0
+      envio-linux-arm64: 2.26.0
+      envio-linux-x64: 2.26.0
     transitivePeerDependencies:
       - bufferutil
       - typescript
@@ -1492,8 +1492,8 @@ snapshots:
 
   webauthn-p256@0.0.5:
     dependencies:
-      '@noble/curves': 1.4.0
-      '@noble/hashes': 1.4.0
+      '@noble/curves': 1.9.2
+      '@noble/hashes': 1.8.0
 
   workerpool@6.2.1: {}
 

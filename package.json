@@ -7,7 +7,7 @@
     "watch": "tsc --watch",
     "mocha": "ts-mocha test/**/*.ts",
     "codegen": "envio codegen",
-    "dev": "TUI_OFF=true && envio dev",
+    "dev": "export LOG_STRATEGY=both-prettyconsole && export LOG_FILE=../debug.log && envio dev",
     "start": "envio start",
     "test": "pnpm mocha"
   },
@@ -21,7 +21,7 @@
     "typescript": "5.2.2"
   },
   "dependencies": {
-    "envio": "2.25.0",
+    "envio": "2.26.0",
     "viem": "^2.33.0"
   },
   "optionalDependencies": {

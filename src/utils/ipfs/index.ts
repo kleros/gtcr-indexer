@@ -16,7 +16,7 @@ async function fetchFromEndpoint(
       throw new Error("Unable to fetch from endpoint");
     }
   } catch (e) {
-    context.log.warn(`Unable to fetch from ${endpoint}/${ipfsHash}`);
+    context.log.warn(`Unable to fetch from ${endpoint}/${ipfsHash} : ${e}`);
   }
   return null;
 }
