@@ -1,15 +1,17 @@
 import { EffectContext } from "envio";
-
+import axios from "axios";
 async function fetchFromEndpoint(
   endpoint: string,
   ipfsHash: string,
   context: EffectContext
 ): Promise<JSON | null> {
   try {
-    const response = await fetch(`${endpoint}/${ipfsHash}`);
+    const response = await axios.get(`${endpoint}/${ipfsHash}`, {
+      timeout: 20_000,
+    });
 
-    if (response.ok) {
-      const metadata: any = await response.json();
+    if (response.data) {
+      const metadata: any = response.data;
       context.log.info(metadata);
       return metadata;
     } else {
