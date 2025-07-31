@@ -19,7 +19,7 @@ export const fetchItemData = experimental_createEffect(
     input: {
       ipfsHash: S.string,
     },
-    output: S.nullable(itemMetadataSchema),
+    output: S.union([itemMetadataSchema, S.shape(S.schema(0), (_) => null)]),
     cache: true,
   },
   async ({ input, context }) => {
@@ -35,7 +35,7 @@ export const fetchItemData = experimental_createEffect(
       if (err instanceof Error) {
         context.log.error(`Error fetching Item Metadata: ${err.message}`);
       }
-      return;
+      return null;
     }
   }
 );
