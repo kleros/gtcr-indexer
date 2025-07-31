@@ -6,9 +6,7 @@ async function fetchFromEndpoint(
   context: EffectContext
 ): Promise<JSON | null> {
   try {
-    const response = await axios.get(`${endpoint}/${ipfsHash}`, {
-      timeout: 20_000,
-    });
+    const response = await axios.get(`${endpoint}/${ipfsHash}`);
 
     if (response.data) {
       const metadata: any = response.data;
