@@ -137,7 +137,7 @@ export function getStatus(index: number) {
   return statusArray.at(index) || "None";
 }
 
-export function getFinalRuling(outcome: number): string {
+export function getFinalRuling(outcome: number) {
   if (outcome === 0) return NONE;
   if (outcome === 1) return ACCEPT;
   if (outcome === 2) return REJECT;

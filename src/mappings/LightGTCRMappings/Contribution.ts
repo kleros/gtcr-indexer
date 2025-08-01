@@ -15,14 +15,17 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
 
     const round = await context.LRound.get(roundID);
 
-    const roundInfo = await context.effect(getRoundInfo, {
-      contractAddress: event.srcAddress,
-      chainId: event.chainId,
-      blockNumber: event.block.number,
-      itemID: event.params._itemID,
-      requestID: event.params._requestID,
-      roundID: event.params._roundID,
-    });
+    let roundInfo;
+    if (event.params._roundID !== ZERO) {
+      roundInfo = await context.effect(getRoundInfo, {
+        contractAddress: event.srcAddress,
+        chainId: event.chainId,
+        blockNumber: event.block.number,
+        itemID: event.params._itemID,
+        requestID: event.params._requestID,
+        roundID: event.params._roundID,
+      });
+    }
 
     return {
       roundID,
@@ -51,7 +54,7 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
     let amountPaidRequester = ZERO;
     let hasPaidRequester = false;
     let hasPaidChallenger = false;
-
+    let feeRewards;
     if (event.params._roundID === ZERO) {
       if (event.params._side === ONE) {
         amountPaidRequester = event.params._contribution;
@@ -61,10 +64,12 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
         hasPaidChallenger = true;
       }
     } else {
-      hasPaidRequester = roundInfo.hasPaid.requester;
-      hasPaidChallenger = roundInfo.hasPaid.challenger;
-      amountPaidRequester = roundInfo.amountPaid.requester;
-      amountPaidChallenger = roundInfo.amountPaid.challenger;
+      // for round 0 roundInfo is not fetched, so the type here shows as undefined
+      hasPaidRequester = roundInfo?.hasPaid.requester ?? false;
+      hasPaidChallenger = roundInfo?.hasPaid.challenger ?? false;
+      amountPaidRequester = roundInfo?.amountPaid.requester ?? ZERO;
+      amountPaidChallenger = roundInfo?.amountPaid.challenger ?? ZERO;
+      feeRewards = roundInfo?.feeRewards;
     }
 
     const updatedRound: LRound = {
@@ -73,7 +78,7 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
       amountPaidChallenger,
       hasPaidRequester,
       hasPaidChallenger,
-      feeRewards: roundInfo.feeRewards,
+      feeRewards: feeRewards ?? round.feeRewards,
       numberOfContributions: round.numberOfContributions + ONE,
       lastFundedRequester:
         event.params._side === ONE

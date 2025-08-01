@@ -148,8 +148,6 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
       finalRuling: undefined,
     };
 
-    // TODO : create round
-
     const roundID = requestID + "-0";
 
     // Note that everything related to the deposit (e.g. contribution creation)

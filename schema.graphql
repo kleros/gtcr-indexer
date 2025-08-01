@@ -11,6 +11,7 @@ enum Status {
 }
 
 enum Ruling {
+  Error
   "The arbitrator did not rule or refused to rule."
   None
   "The arbitrator ruled in favor of the requester."
