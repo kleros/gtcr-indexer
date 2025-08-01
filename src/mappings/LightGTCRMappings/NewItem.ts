@@ -14,15 +14,17 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
   loader: async ({ event, context }) => {
     const registry = await context.LRegistry.get(event.srcAddress);
 
-    const itemInfo = await context.effect(getItemInfo, {
-      contractAddress: event.srcAddress,
-      chainId: event.chainId,
-      blockNumber: event.block.number,
-      itemID: event.params._itemID,
-    });
-
     const ipfsHash = extractPath(event.params._data);
-    const itemMetadata = await context.effect(fetchItemData, { ipfsHash });
+
+    const [itemInfo, itemMetadata] = await Promise.all([
+      context.effect(getItemInfo, {
+        contractAddress: event.srcAddress,
+        chainId: event.chainId,
+        blockNumber: event.block.number,
+        itemID: event.params._itemID,
+      }),
+      context.effect(fetchItemData, { ipfsHash }),
+    ]);
 
     return {
       registry,
@@ -43,7 +45,7 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
     const { registry, itemInfo, itemMetadata } = loaderReturn;
 
     if (!registry) {
-      console.error(`LRegistry {} not found`, [event.srcAddress]);
+      context.log.error(`LRegistry ${event.srcAddress} not found`);
       return;
     }
 

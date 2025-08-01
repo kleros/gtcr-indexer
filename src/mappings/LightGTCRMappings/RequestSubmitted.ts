@@ -1,4 +1,4 @@
-import { LightGeneralizedTCR, LItem, LRound, Request } from "generated";
+import { LightGeneralizedTCR, LItem, LRequest } from "generated";
 import {
   getExtendedStatus,
   getStatus,
@@ -12,6 +12,8 @@ import { getItemInfo } from "../../utils/contract/getItemInfo";
 import { getRequestInfo } from "../../utils/contract/getRequestInfo";
 import { getRemovalBaseDeposit } from "../../utils/contract/getRemovalBaseDeposit";
 import { getSubmissionBaseDeposit } from "../../utils/contract/getSubmissionBaseDeposit";
+import { updateCounters } from "../helpers/updateCounters";
+import { buildNewRound } from "../helpers/buildRound";
 
 LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
   loader: async ({ event, context }) => {
@@ -33,7 +35,8 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
       chainId: event.chainId,
       blockNumber: event.block.number,
       itemID: event.params._itemID,
-      requestIndex: itemInfo.numberOfRequests,
+      // item.numberOfRequests is the count of requests, so we adjust for zero-based indexing
+      requestIndex: itemInfo.numberOfRequests - ONE,
     });
 
     const submissionBaseDeposit = await context.effect(
@@ -104,7 +107,7 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
       updatedItem.status
     );
 
-    const requestIndex = itemInfo.numberOfRequests;
+    const requestIndex = itemInfo.numberOfRequests - ONE;
     const requestID = graphItemID + "-" + requestIndex.toString();
 
     const evidenceGroupID =
@@ -114,7 +117,7 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
       numberOfEvidence: ZERO,
     });
 
-    const request: Request = {
+    const request: LRequest = {
       id: requestID,
       disputed: false,
       arbitrator: requestInfo.requestArbitrator,
@@ -153,49 +156,21 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
     // is handled in handleContribution.
     const round = buildNewRound(roundID, requestID, event.block.timestamp);
 
-    // TODO: Counters
+    // Accounting.
+    if (itemInfo.numberOfRequests === ONE) {
+      // This is the first request for this item, which must be
+      // a registration request.
+      context.LRegistry.set({
+        ...registry,
+        numberOfRegistrationRequested:
+          registry.numberOfRegistrationRequested + ONE,
+      });
+    } else {
+      updateCounters(previousStatus, newStatus, registry, context);
+    }
 
-    //   // Accounting.
-    //   if (itemInfo.value1.equals(BigInt.fromI32(1))) {
-    //     // This is the first request for this item, which must be
-    //     // a registration request.
-    //     registry.numberOfRegistrationRequested =
-    //       registry.numberOfRegistrationRequested.plus(BigInt.fromI32(1));
-    //   } else {
-    //     updateCounters(previousStatus, newStatus, event.address);
-    //   }
-
-    context.Request.set(request);
-    context.LRegistry.set(registry);
+    context.LRequest.set(request);
     context.LItem.set(updatedItem);
     context.LRound.set(round);
   },
 });
-
-function buildNewRound(
-  roundID: string,
-  requestID: string,
-  timestamp: number
-): LRound {
-  return {
-    id: roundID,
-    request_id: requestID,
-    amountPaidChallenger: ZERO,
-    amountPaidRequester: ZERO,
-    feeRewards: ZERO,
-    hasPaidChallenger: false,
-    hasPaidRequester: false,
-    lastFundedRequester: ZERO,
-    lastFundedChallenger: ZERO,
-    appealPeriodStart: ZERO,
-    appealPeriodEnd: ZERO,
-    rulingTime: ZERO,
-    ruling: NONE,
-    creationTime: BigInt(timestamp),
-    numberOfContributions: ZERO,
-    appealed: false,
-    appealedAt: undefined,
-    txHashAppealDecision: undefined,
-    txHashAppealPossible: undefined,
-  };
-}

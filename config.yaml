@@ -16,6 +16,9 @@ networks:
           - event: ConnectedTCRSet(address indexed _connectedTCR)
           - event: Contribution(bytes32 indexed _itemID, uint256 _requestID, uint256 _roundID, address indexed _contributor, uint256 _contribution, uint8 _side)
           - event: Dispute(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _metaEvidenceID, uint256 _evidenceGroupID)
+            field_selection:
+              transaction_fields:
+                - from
           - event: Evidence(address indexed _arbitrator, uint256 indexed _evidenceGroupID, address indexed _party, string _evidence)
           - event: ItemStatusChange(bytes32 indexed _itemID, bool _updatedDirectly)
           - event: MetaEvidence(uint256 indexed _metaEvidenceID, string _evidence)

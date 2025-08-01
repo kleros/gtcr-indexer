@@ -1,12 +1,20 @@
 import { EffectContext } from "envio";
 import axios from "axios";
+import https from "https";
+
+const httpsAgent = new https.Agent({
+  // rejectUnauthorized: false, // Disable TLS cert check for debug
+  keepAlive: true,
+  maxSockets: 100,
+});
+
 async function fetchFromEndpoint(
   endpoint: string,
   ipfsHash: string,
   context: EffectContext
 ): Promise<JSON | null> {
   try {
-    const response = await axios.get(`${endpoint}/${ipfsHash}`);
+    const response = await axios.get(`${endpoint}/${ipfsHash}`, { httpsAgent });
 
     if (response.data) {
       const metadata: any = response.data;
