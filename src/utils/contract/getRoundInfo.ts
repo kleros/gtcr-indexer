@@ -25,6 +25,7 @@ export const getRoundInfo = experimental_createEffect(
       },
       feeRewards: S.bigint,
     },
+    cache: true,
   },
   async ({ input, context }) => {
     const {

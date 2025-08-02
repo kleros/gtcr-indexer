@@ -29,6 +29,7 @@ export const getRequestInfo = experimental_createEffect(
       requestArbitratorExtraData: S.string,
       metaEvidenceID: S.bigint,
     },
+    cache: true,
   },
   async ({ input, context }) => {
     const { contractAddress, chainId, blockNumber, itemID, requestIndex } =

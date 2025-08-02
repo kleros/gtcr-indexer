@@ -14,6 +14,7 @@ export const arbitratorDisputeIDToItemID = experimental_createEffect(
       disputeID: S.bigint,
     },
     output: S.string,
+    cache: true,
   },
   async ({ input, context }) => {
     const { contractAddress, chainId, blockNumber, arbitrator, disputeID } =

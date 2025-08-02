@@ -3,3 +3,7 @@ import "./RequestSubmitted";
 import "./Contribution";
 import "./Dispute";
 import "./ItemStatusChange";
+import "./RewardWithdrawn";
+import "./ConnectedTCRSet";
+import "./Ruling";
+import "./MetaEvidence";

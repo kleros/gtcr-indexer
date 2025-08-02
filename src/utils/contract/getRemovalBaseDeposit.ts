@@ -11,6 +11,7 @@ export const getRemovalBaseDeposit = experimental_createEffect(
       blockNumber: S.number,
     },
     output: S.bigint,
+    cache: true,
   },
   async ({ input, context }) => {
     const { contractAddress, chainId, blockNumber } = input;
