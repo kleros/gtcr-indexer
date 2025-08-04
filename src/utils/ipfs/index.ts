@@ -34,7 +34,7 @@ export async function tryFetchIpfsFile(
   context: EffectContext
 ): Promise<JSON | null> {
   const endpoints = [
-    process.env.KLEROS_CDN_LINK || "",
+    process.env.ENVIO_KLEROS_CDN_LINK || "",
     "https://cloudflare-ipfs.com/ipfs",
     "https://ipfs.io/ipfs",
   ];
