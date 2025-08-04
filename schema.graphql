@@ -49,14 +49,13 @@ type Evidence {
   "The address of the party that sent this piece of evidence."
   party: Bytes!
   "The URI of the evidence file."
-  URI: String!
+  uri: String!
   "This is the <number>th evidence submitted (starting at 0) for <request>."
   number: BigInt!
   "When was this evidence posted"
   timestamp: BigInt!
   "Tx hash of the evidence submission"
   txHash: Bytes!
-  metadata: EvidenceMetadata!
 }
 
 type EvidenceMetadata {
