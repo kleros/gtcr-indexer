@@ -118,11 +118,6 @@ type LRegistry {
   numberOfChallengedClearing: BigInt!
   "Connected TCR. Can be the 0 address. In practice, will never be null."
   connectedTCR: Bytes
-  metadata: LRegistryMetadata!
-}
-
-type LRegistryMetadata {
-  id: ID!
   title: String
   description: String
   itemName: String

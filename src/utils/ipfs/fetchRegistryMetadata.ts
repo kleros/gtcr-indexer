@@ -1,0 +1,48 @@
+import { experimental_createEffect, S } from "envio";
+import { tryFetchIpfsFile } from ".";
+
+const registryMetadataSchema = S.schema({
+  metadata: S.optional(
+    S.schema({
+      tcrTitle: S.optional(S.string),
+      description: S.optional(S.string),
+      itemName: S.optional(S.string),
+      itemNamePlural: S.optional(S.string),
+      parentTCRAddress: S.optional(S.string),
+      isConnectedTCR: S.optional(S.boolean),
+      requireRemovalEvidence: S.optional(S.boolean),
+      isTCRofTcrs: S.optional(S.boolean),
+      relTcrDisabled: S.optional(S.boolean),
+    })
+  ),
+});
+
+export const fetchRegistryMetadata = experimental_createEffect(
+  {
+    name: "fetchRegistryMetadata",
+    input: {
+      ipfsHash: S.string,
+    },
+    output: S.union([
+      registryMetadataSchema,
+      S.shape(S.schema(0), (_) => null),
+    ]),
+    cache: true,
+  },
+  async ({ input, context }) => {
+    const { ipfsHash } = input;
+
+    try {
+      const data = await tryFetchIpfsFile(ipfsHash, context);
+
+      S.assertOrThrow(data, registryMetadataSchema);
+
+      return data;
+    } catch (err) {
+      if (err instanceof Error) {
+        context.log.error(`Error fetching Registry Metadata: ${err.message}`);
+      }
+      return null;
+    }
+  }
+);

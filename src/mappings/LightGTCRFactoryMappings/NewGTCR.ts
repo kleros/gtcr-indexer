@@ -24,9 +24,17 @@ LightGTCRFactory.NewGTCR.handler(async ({ event, context }) => {
     numberOfChallengedClearing: ZERO,
     numberOfChallengedRegistrations: ZERO,
     connectedTCR: undefined,
-    // TODO add ipfs fetch here to get the registry details
-    metadata_id: "",
+    title: undefined,
+    description: undefined,
+    itemName: undefined,
+    itemNamePlural: undefined,
+    isConnectedTCR: undefined,
+    requireRemovalEvidence: undefined,
+    isTCRofTcrs: undefined,
+    parentTCRAddress: undefined,
+    relTcrDisabled: undefined,
   };
+
   context.LRegistry.set(registry);
   context.MetaEvidence.set(registrationMetaEvidence);
   context.MetaEvidence.set(clearingMetaEvidence);
