@@ -16,6 +16,7 @@ export const getItemInfo = experimental_createEffect(
       numberOfRequests: S.bigint,
       sumDeposit: S.bigint,
     },
+    cache: true,
   },
   async ({ input, context }) => {
     const { contractAddress, chainId, blockNumber, itemID } = input;

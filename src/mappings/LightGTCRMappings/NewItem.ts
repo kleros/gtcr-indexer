@@ -10,13 +10,20 @@ import {
 import { getItemInfo } from "../../utils/contract/getItemInfo";
 import { fetchItemData } from "../../utils/ipfs/fetchItemData";
 
+// We assume this is an item added via addItemDirectly and care
+// only about saving the item json data.
+// If it was emitted via addItem, all the missing/wrong data regarding
+// things like submission time, arbitrator and deposit will be set in
+// handleRequestSubmitted.
+//
+// Accounting for items added or removed directly is done
+// inside handleStatusUpdated.
 LightGeneralizedTCR.NewItem.handlerWithLoader({
   loader: async ({ event, context }) => {
-    const registry = await context.LRegistry.get(event.srcAddress);
-
     const ipfsHash = extractPath(event.params._data);
 
-    const [itemInfo, itemMetadata] = await Promise.all([
+    const [registry, itemInfo, itemMetadata] = await Promise.all([
+      context.LRegistry.get(event.srcAddress),
       context.effect(getItemInfo, {
         contractAddress: event.srcAddress,
         chainId: event.chainId,
@@ -26,28 +33,12 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
       context.effect(fetchItemData, { ipfsHash }),
     ]);
 
-    return {
-      registry,
-      itemInfo,
-      itemMetadata,
-    };
-  },
-  handler: async ({ event, context, loaderReturn }) => {
-    // We assume this is an item added via addItemDirectly and care
-    // only about saving the item json data.
-    // If it was emitted via addItem, all the missing/wrong data regarding
-    // things like submission time, arbitrator and deposit will be set in
-    // handleRequestSubmitted.
-    //
-    // Accounting for items added or removed directly is done
-    // inside handleStatusUpdated.
-    const graphItemID = event.params._itemID + "@" + event.srcAddress;
-    const { registry, itemInfo, itemMetadata } = loaderReturn;
-
     if (!registry) {
       context.log.error(`LRegistry ${event.srcAddress} not found`);
       return;
     }
+
+    const graphItemID = event.params._itemID + "@" + event.srcAddress;
 
     const item: LItem = {
       id: graphItemID,
@@ -121,4 +112,5 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
 
     context.LItem.set({ ...item, key0, key1, key2, key3, key4, keywords });
   },
+  handler: async ({ event, context, loaderReturn }) => {},
 });

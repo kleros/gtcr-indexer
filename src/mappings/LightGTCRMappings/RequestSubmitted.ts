@@ -19,10 +19,6 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
   loader: async ({ event, context }) => {
     const graphItemID = event.params._itemID + "@" + event.srcAddress;
 
-    const [registry, item] = await Promise.all([
-      context.LRegistry.get(event.srcAddress),
-      context.LItem.get(graphItemID),
-    ]);
     const itemInfo = await context.effect(getItemInfo, {
       contractAddress: event.srcAddress,
       chainId: event.chainId,
@@ -30,50 +26,41 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
       itemID: event.params._itemID,
     });
 
-    const requestInfo = await context.effect(getRequestInfo, {
-      contractAddress: event.srcAddress,
-      chainId: event.chainId,
-      blockNumber: event.block.number,
-      itemID: event.params._itemID,
-      // item.numberOfRequests is the count of requests, so we adjust for zero-based indexing
-      requestIndex: itemInfo.numberOfRequests - ONE,
-    });
-
-    const submissionBaseDeposit = await context.effect(
-      getSubmissionBaseDeposit,
-      {
+    const evidenceGroupID =
+      event.params._evidenceGroupID + "@" + event.srcAddress;
+    const [
+      registry,
+      item,
+      evidenceGroup,
+      requestInfo,
+      submissionBaseDeposit,
+      removalBaseDeposit,
+    ] = await Promise.all([
+      context.LRegistry.get(event.srcAddress),
+      context.LItem.get(graphItemID),
+      context.EvidenceGroup.getOrCreate({
+        id: evidenceGroupID,
+        numberOfEvidence: ZERO,
+      }),
+      context.effect(getRequestInfo, {
         contractAddress: event.srcAddress,
         chainId: event.chainId,
         blockNumber: event.block.number,
-      }
-    );
-
-    const removalBaseDeposit = await context.effect(getRemovalBaseDeposit, {
-      contractAddress: event.srcAddress,
-      chainId: event.chainId,
-      blockNumber: event.block.number,
-    });
-
-    return {
-      registry,
-      item,
-      itemInfo,
-      requestInfo,
-      submissionBaseDeposit,
-      removalBaseDeposit,
-    };
-  },
-  handler: async ({ event, context, loaderReturn }) => {
-    const {
-      registry,
-      item,
-      itemInfo,
-      requestInfo,
-      submissionBaseDeposit,
-      removalBaseDeposit,
-    } = loaderReturn;
-
-    const graphItemID = event.params._itemID + "@" + event.srcAddress;
+        itemID: event.params._itemID,
+        // item.numberOfRequests is the count of requests, so we adjust for zero-based indexing
+        requestIndex: itemInfo.numberOfRequests - ONE,
+      }),
+      context.effect(getSubmissionBaseDeposit, {
+        contractAddress: event.srcAddress,
+        chainId: event.chainId,
+        blockNumber: event.block.number,
+      }),
+      context.effect(getRemovalBaseDeposit, {
+        contractAddress: event.srcAddress,
+        chainId: event.chainId,
+        blockNumber: event.block.number,
+      }),
+    ]);
 
     if (!item) {
       context.log.error(`LItem for graphItemID ${graphItemID} not found.`);
@@ -109,13 +96,6 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
 
     const requestIndex = itemInfo.numberOfRequests - ONE;
     const requestID = graphItemID + "-" + requestIndex.toString();
-
-    const evidenceGroupID =
-      event.params._evidenceGroupID + "@" + event.srcAddress;
-    const evidenceGroup = await context.EvidenceGroup.getOrCreate({
-      id: evidenceGroupID,
-      numberOfEvidence: ZERO,
-    });
 
     const request: LRequest = {
       id: requestID,
@@ -171,4 +151,5 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
     context.LItem.set(updatedItem);
     context.LRound.set(round);
   },
+  handler: async ({ event, context, loaderReturn }) => {},
 });

@@ -39,20 +39,6 @@ LightGeneralizedTCR.Dispute.handlerWithLoader({
       request = await context.LRequest.get(requestID);
     }
 
-    return {
-      graphItemID,
-      item,
-      requestID,
-      requestInfo,
-      request,
-      registry,
-    };
-  },
-
-  handler: async ({ event, context, loaderReturn }) => {
-    const { graphItemID, item, registry, request, requestInfo, requestID } =
-      loaderReturn;
-
     if (!item) {
       context.log.error(`LItem at graphItemID ${graphItemID} not found`);
       return;
@@ -100,4 +86,6 @@ LightGeneralizedTCR.Dispute.handlerWithLoader({
     context.LRequest.set(updatedRequest);
     context.LRound.set(newRound);
   },
+
+  handler: async ({ event, context, loaderReturn }) => {},
 });

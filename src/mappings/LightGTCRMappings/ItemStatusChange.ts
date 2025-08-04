@@ -18,6 +18,8 @@ import { getRequestInfo } from "../../utils/contract/getRequestInfo";
 LightGeneralizedTCR.ItemStatusChange.handlerWithLoader({
   loader: async ({ event, context }) => {
     try {
+      const graphItemID = event.params._itemID + "@" + event.srcAddress;
+
       // This handler is used to handle transactions to item statuses 0 and 1.
       // All other status updates are handled elsewhere.
       const itemInfo = await context.effect(getItemInfo, {
@@ -36,11 +38,34 @@ LightGeneralizedTCR.ItemStatusChange.handlerWithLoader({
         return;
       }
 
-      const graphItemID = event.params._itemID + "@" + event.srcAddress;
-      const [item, registry] = await Promise.all([
-        context.LItem.getOrThrow(graphItemID),
-        context.LRegistry.getOrThrow(event.srcAddress),
+      const requestIndex = itemInfo.numberOfRequests - ONE;
+      const requestID = graphItemID + "-" + requestIndex.toString();
+
+      const [item, registry, request, requestInfo] = await Promise.all([
+        context.LItem.get(graphItemID),
+        context.LRegistry.get(event.srcAddress),
+        context.LRequest.get(requestID),
+        context.effect(getRequestInfo, {
+          contractAddress: event.srcAddress,
+          chainId: event.chainId,
+          blockNumber: event.block.number,
+          itemID: event.params._itemID,
+          requestIndex,
+        }),
       ]);
+
+      if (!item) {
+        context.log.error(`LItem at graphItemID ${graphItemID} not found`);
+        return;
+      }
+      if (!registry) {
+        context.log.error(`LRegistry at ${event.srcAddress} not found`);
+        return;
+      }
+      if (!request) {
+        context.log.error(`LRequest at requestID ${requestID} not found`);
+        return;
+      }
 
       // We take the previous and new extended statuses for accounting purposes.
       const previousStatus = getExtendedStatus(item.disputed, item.status);
@@ -66,18 +91,6 @@ LightGeneralizedTCR.ItemStatusChange.handlerWithLoader({
         status: getStatus(itemInfo.status),
         latestRequestResolutionTime: BigInt(event.block.timestamp),
       };
-
-      const requestIndex = item.numberOfRequests - ONE;
-      const requestInfo = await context.effect(getRequestInfo, {
-        contractAddress: event.srcAddress,
-        chainId: event.chainId,
-        blockNumber: event.block.number,
-        itemID: event.params._itemID,
-        requestIndex,
-      });
-
-      const requestID = graphItemID + "-" + requestIndex.toString();
-      const request = await context.LRequest.getOrThrow(requestID);
 
       const updatedRequest: LRequest = {
         ...request,

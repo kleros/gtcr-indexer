@@ -27,16 +27,6 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
       });
     }
 
-    return {
-      roundID,
-      round,
-      roundInfo,
-    };
-  },
-
-  handler: async ({ event, context, loaderReturn }) => {
-    const { roundID, round, roundInfo } = loaderReturn;
-
     if (!round) {
       context.log.error(`LRound at roundID ${roundID} not found`);
       return;
@@ -93,4 +83,6 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
     context.LContribution.set(contribution);
     context.LRound.set(updatedRound);
   },
+
+  handler: async ({ event, context, loaderReturn }) => {},
 });
