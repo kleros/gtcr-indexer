@@ -1,15 +1,21 @@
 import { Evidence, LightGeneralizedTCR } from "generated";
-import { ONE, ZERO } from "../../utils";
+import { extractPath, ONE, ZERO } from "../../utils";
+import { fetchEvidenceData } from "../../utils/ipfs/fetchEvidenceData";
 
 LightGeneralizedTCR.Evidence.handlerWithLoader({
   loader: async ({ event, context }) => {
     const evidenceGroupID =
       event.params._evidenceGroupID.toString() + "@" + event.srcAddress;
 
-    const evidenceGroup = await context.EvidenceGroup.getOrCreate({
-      id: evidenceGroupID,
-      numberOfEvidence: ZERO,
-    });
+    const ipfsHash = extractPath(event.params._evidence);
+
+    const [evidenceGroup, evidenceData] = await Promise.all([
+      context.EvidenceGroup.getOrCreate({
+        id: evidenceGroupID,
+        numberOfEvidence: ZERO,
+      }),
+      context.effect(fetchEvidenceData, { ipfsHash }),
+    ]);
 
     const evidence: Evidence = {
       id: evidenceGroupID + "-" + evidenceGroup.numberOfEvidence.toString(),
@@ -20,6 +26,11 @@ LightGeneralizedTCR.Evidence.handlerWithLoader({
       timestamp: BigInt(event.block.timestamp),
       txHash: event.transaction.hash,
       evidenceGroup_id: evidenceGroup.id,
+      title: evidenceData?.title,
+      name: evidenceData?.name,
+      description: evidenceData?.description,
+      fileURI: evidenceData?.fileURI,
+      fileTypeExtension: evidenceData?.fileTypeExtension,
     };
 
     context.EvidenceGroup.set({
@@ -27,9 +38,6 @@ LightGeneralizedTCR.Evidence.handlerWithLoader({
       numberOfEvidence: evidenceGroup.numberOfEvidence + ONE,
     });
     context.Evidence.set(evidence);
-
-    // TODO: ipfs fetching
   },
-
   handler: async ({ event, context, loaderReturn }) => {},
 });

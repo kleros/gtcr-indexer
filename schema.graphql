@@ -56,10 +56,6 @@ type Evidence {
   timestamp: BigInt!
   "Tx hash of the evidence submission"
   txHash: Bytes!
-}
-
-type EvidenceMetadata {
-  id: ID!
   "Name of the evidence"
   name: String
   "Title of the evidence"
