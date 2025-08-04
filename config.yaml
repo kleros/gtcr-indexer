@@ -20,6 +20,9 @@ networks:
               transaction_fields:
                 - from
           - event: Evidence(address indexed _arbitrator, uint256 indexed _evidenceGroupID, address indexed _party, string _evidence)
+            field_selection:
+              transaction_fields:
+                - hash
           - event: ItemStatusChange(bytes32 indexed _itemID, bool _updatedDirectly)
             field_selection:
               transaction_fields:

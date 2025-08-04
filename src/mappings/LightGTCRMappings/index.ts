@@ -7,3 +7,4 @@ import "./RewardWithdrawn";
 import "./ConnectedTCRSet";
 import "./Ruling";
 import "./MetaEvidence";
+import "./Evidence";
