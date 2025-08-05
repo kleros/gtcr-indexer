@@ -40,6 +40,12 @@ networks:
         handler: src/mappings/index.ts
         events:
           - event: AppealPossible(uint256 indexed _disputeID, address indexed _arbitrable)
+            field_selection:
+              transaction_fields:
+                - hash
           - event: AppealDecision(uint256 indexed _disputeID, address indexed _arbitrable)
+            field_selection:
+              transaction_fields:
+                - hash
 
 unordered_multichain_mode: true
