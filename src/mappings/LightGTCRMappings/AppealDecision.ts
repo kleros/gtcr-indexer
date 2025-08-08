@@ -1,9 +1,9 @@
-import { IArbitrator } from "generated";
+import { LIArbitrator } from "generated";
 import { arbitratorDisputeIDToItemID } from "../../utils/contract/arbitratorDisputeIDToItemID";
 import { ONE } from "../../utils";
 import { buildNewRound } from "../helpers/buildRound";
 
-IArbitrator.AppealDecision.handlerWithLoader({
+LIArbitrator.AppealDecision.handlerWithLoader({
   loader: async ({ event, context }) => {
     const [registry, itemID] = await Promise.all([
       context.LRegistry.get(event.params._arbitrable.toLowerCase()),
