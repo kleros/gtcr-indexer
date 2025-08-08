@@ -5,7 +5,9 @@ import { fetchEvidenceData } from "../../utils/ipfs/fetchEvidenceData";
 LightGeneralizedTCR.Evidence.handlerWithLoader({
   loader: async ({ event, context }) => {
     const evidenceGroupID =
-      event.params._evidenceGroupID.toString() + "@" + event.srcAddress;
+      event.params._evidenceGroupID.toString() +
+      "@" +
+      event.srcAddress.toLowerCase();
 
     const ipfsHash = extractPath(event.params._evidence);
 
@@ -19,8 +21,8 @@ LightGeneralizedTCR.Evidence.handlerWithLoader({
 
     const evidence: Evidence = {
       id: evidenceGroupID + "-" + evidenceGroup.numberOfEvidence.toString(),
-      arbitrator: event.params._arbitrator,
-      party: event.params._party,
+      arbitrator: event.params._arbitrator.toLowerCase(),
+      party: event.params._party.toLowerCase(),
       uri: event.params._evidence,
       number: evidenceGroup.numberOfEvidence,
       timestamp: BigInt(event.block.timestamp),

@@ -13,7 +13,7 @@ LightGeneralizedTCR.Ruling.handlerWithLoader({
         disputeID: event.params._disputeID,
       });
 
-      const graphItemID = itemID + "@" + event.srcAddress;
+      const graphItemID = itemID + "@" + event.srcAddress.toLowerCase();
 
       const item = await context.LItem.getOrThrow(graphItemID);
 

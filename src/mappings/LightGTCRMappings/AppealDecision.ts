@@ -6,7 +6,7 @@ import { buildNewRound } from "../helpers/buildRound";
 IArbitrator.AppealDecision.handlerWithLoader({
   loader: async ({ event, context }) => {
     const [registry, itemID] = await Promise.all([
-      context.LRegistry.get(event.params._arbitrable),
+      context.LRegistry.get(event.params._arbitrable.toLowerCase()),
       context.effect(arbitratorDisputeIDToItemID, {
         contractAddress: event.params._arbitrable,
         chainId: event.chainId,
@@ -19,7 +19,7 @@ IArbitrator.AppealDecision.handlerWithLoader({
     if (!registry) {
       return;
     }
-    const graphItemID = itemID + "@" + event.params._arbitrable;
+    const graphItemID = itemID + "@" + event.params._arbitrable.toLowerCase();
 
     const item = await context.LItem.get(graphItemID);
 

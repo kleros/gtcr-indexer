@@ -17,7 +17,8 @@ import { buildNewRound } from "../helpers/buildRound";
 
 LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
   loader: async ({ event, context }) => {
-    const graphItemID = event.params._itemID + "@" + event.srcAddress;
+    const graphItemID =
+      event.params._itemID + "@" + event.srcAddress.toLowerCase();
 
     const itemInfo = await context.effect(getItemInfo, {
       contractAddress: event.srcAddress,
@@ -27,7 +28,7 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
     });
 
     const evidenceGroupID =
-      event.params._evidenceGroupID + "@" + event.srcAddress;
+      event.params._evidenceGroupID + "@" + event.srcAddress.toLowerCase();
     const [
       registry,
       item,
@@ -36,7 +37,7 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
       submissionBaseDeposit,
       removalBaseDeposit,
     ] = await Promise.all([
-      context.LRegistry.get(event.srcAddress),
+      context.LRegistry.get(event.srcAddress.toLowerCase()),
       context.LItem.get(graphItemID),
       context.EvidenceGroup.getOrCreate({
         id: evidenceGroupID,
@@ -103,10 +104,10 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
       arbitrator: requestInfo.requestArbitrator,
       arbitratorExtraData: requestInfo.requestArbitratorExtraData,
       challenger: ZERO_ADDRESS,
-      requester: requestInfo.parties.requester,
+      requester: requestInfo.parties.requester.toLowerCase(),
       item_id: updatedItem.id,
       registry_id: registry.id,
-      registryAddress: event.srcAddress,
+      registryAddress: event.srcAddress.toLowerCase(),
       resolutionTime: ZERO,
       disputeOutcome: NONE,
       resolved: false,

@@ -15,11 +15,11 @@ LightGeneralizedTCR.Dispute.handlerWithLoader({
       disputeID: event.params._disputeID,
     });
 
-    const graphItemID = itemID + "@" + event.srcAddress;
+    const graphItemID = itemID + "@" + event.srcAddress.toLowerCase();
 
     const [item, registry] = await Promise.all([
       context.LItem.get(graphItemID),
-      context.LRegistry.get(event.srcAddress),
+      context.LRegistry.get(event.srcAddress.toLowerCase()),
     ]);
 
     let requestID;
@@ -64,13 +64,13 @@ LightGeneralizedTCR.Dispute.handlerWithLoader({
     const updatedItem: LItem = {
       ...item,
       disputed: true,
-      latestChallenger: event.transaction.from ?? ZERO_ADDRESS,
+      latestChallenger: event.transaction.from?.toLowerCase() ?? ZERO_ADDRESS,
     };
 
     const updatedRequest: LRequest = {
       ...request,
       disputed: true,
-      challenger: requestInfo.parties.challenger,
+      challenger: requestInfo.parties.challenger.toLowerCase(),
       numberOfRounds: BigInt(2),
       disputeID: event.params._disputeID,
     };

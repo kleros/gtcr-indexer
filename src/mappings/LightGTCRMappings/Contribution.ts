@@ -8,7 +8,8 @@ import { ONE, ZERO } from "../../utils";
 // - When a user funds a side of an appeal.
 LightGeneralizedTCR.Contribution.handlerWithLoader({
   loader: async ({ event, context }) => {
-    const graphItemID = event.params._itemID + "@" + event.srcAddress;
+    const graphItemID =
+      event.params._itemID.toLowerCase() + "@" + event.srcAddress.toLowerCase();
 
     const requestID = graphItemID + "-" + event.params._requestID.toString();
     const roundID = requestID + "-" + event.params._roundID.toString();
@@ -37,7 +38,7 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
       round_id: roundID,
       side: event.params._side,
       withdrawable: false,
-      contributor: event.params._contributor,
+      contributor: event.params._contributor.toLowerCase(),
     };
 
     let amountPaidChallenger = ZERO;
