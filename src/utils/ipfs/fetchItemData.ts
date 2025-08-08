@@ -13,6 +13,11 @@ const itemMetadataSchema = S.schema({
   values: S.record(S.string),
 });
 
+/**
+ * Fetches Item's data from ipfs uri provided
+ * @param ipfsHash CID of the ipfs file
+ * @example uri https://ipfs.io/ipfs/QmS6iwbxLzCUZuMiRxjpbeAuZUU4BkfXaf6knvXVKJtMK4/item.json
+ */
 export const fetchItemData = experimental_createEffect(
   {
     name: "fetchItemData",

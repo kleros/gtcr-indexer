@@ -9,6 +9,11 @@ const evidenceSchema = S.schema({
   fileTypeExtension: S.optional(S.string),
 });
 
+/**
+ * Fetches Evidence's data from ipfs uri provided
+ * @param ipfsHash CID of the ipfs file
+ * @example uri https://ipfs.io/ipfs/QmRqJFhKKdz2KS78ARSWimirZLqUf1tKyAKNexcJ6Y3hy5/evidence.json
+ */
 export const fetchEvidenceData = experimental_createEffect(
   {
     name: "fetchEvidenceData",

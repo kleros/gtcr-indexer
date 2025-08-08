@@ -17,6 +17,11 @@ const registryMetadataSchema = S.schema({
   ),
 });
 
+/**
+ * Fetches Registry's metadata from ipfs uri provided
+ * @param ipfsHash CID of the ipfs file
+ * @example uri https://ipfs.io/ipfs/QmdtT3gupJnavSrtyB1fp4r9h1GVSNcYGy3WJxR36X5uPz/reg.json
+ */
 export const fetchRegistryMetadata = experimental_createEffect(
   {
     name: "fetchRegistryMetadata",
