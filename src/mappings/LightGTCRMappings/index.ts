@@ -8,3 +8,5 @@ import "./ConnectedTCRSet";
 import "./Ruling";
 import "./MetaEvidence";
 import "./Evidence";
+import "./AppealPossible";
+import "./AppealDecision";

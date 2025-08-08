@@ -3,17 +3,17 @@ import { ZERO } from "../../utils";
 
 LightGTCRFactory.NewGTCR.handler(async ({ event, context }) => {
   const registrationMetaEvidence: MetaEvidence = {
-    id: `${event.params._address}-1`,
+    id: `${event.params._address.toLowerCase()}-1`,
     uri: "",
   };
 
   const clearingMetaEvidence: MetaEvidence = {
-    id: `${event.params._address}-2`,
+    id: `${event.params._address.toLowerCase()}-2`,
     uri: "",
   };
 
   const registry: LRegistry = {
-    id: event.params._address,
+    id: event.params._address.toLowerCase(),
     metaEvidenceCount: ZERO,
     registrationMetaEvidence_id: registrationMetaEvidence.id,
     clearingMetaEvidence_id: clearingMetaEvidence.id,
@@ -42,6 +42,6 @@ LightGTCRFactory.NewGTCR.handler(async ({ event, context }) => {
 });
 
 LightGTCRFactory.NewGTCR.contractRegister(({ event, context }) => {
-  context.addLightGeneralizedTCR(event.params._address);
+  context.addLightGeneralizedTCR(event.params._address.toLowerCase());
   context.log.info(`Registered new Light Registry at ${event.params._address}`);
 });

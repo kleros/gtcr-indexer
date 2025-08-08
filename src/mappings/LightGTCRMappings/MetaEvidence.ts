@@ -12,7 +12,7 @@ LightGeneralizedTCR.MetaEvidence.handlerWithLoader({
   loader: async ({ event, context }) => {
     const ipfsHash = extractPath(event.params._evidence);
     const [registry, registryMetadata] = await Promise.all([
-      context.LRegistry.get(event.srcAddress),
+      context.LRegistry.get(event.srcAddress.toLowerCase()),
       context.effect(fetchRegistryMetadata, { ipfsHash }),
     ]);
 
@@ -81,7 +81,7 @@ LightGeneralizedTCR.MetaEvidence.contractRegister(
       context,
     });
 
-    context.addLightGeneralizedTCR(arbitratorAddr);
+    context.addIArbitrator(arbitratorAddr.toLowerCase());
     context.log.info(
       `Registered new Arbitrator at ${arbitratorAddr} for ${event.srcAddress}`
     );

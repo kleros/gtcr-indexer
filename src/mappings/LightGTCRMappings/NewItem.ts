@@ -23,7 +23,7 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
     const ipfsHash = extractPath(event.params._data);
 
     const [registry, itemInfo, itemMetadata] = await Promise.all([
-      context.LRegistry.get(event.srcAddress),
+      context.LRegistry.get(event.srcAddress.toLowerCase()),
       context.effect(getItemInfo, {
         contractAddress: event.srcAddress,
         chainId: event.chainId,
@@ -38,15 +38,16 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
       return;
     }
 
-    const graphItemID = event.params._itemID + "@" + event.srcAddress;
+    const graphItemID =
+      event.params._itemID + "@" + event.srcAddress.toLowerCase();
 
     const item: LItem = {
       id: graphItemID,
       itemID: event.params._itemID,
       data: event.params._data,
       numberOfRequests: ZERO,
-      registry_id: event.srcAddress,
-      registryAddress: event.srcAddress,
+      registry_id: registry.id,
+      registryAddress: event.srcAddress.toLowerCase(),
       disputed: false,
       status: getStatus(itemInfo.status),
       latestRequester: ZERO_ADDRESS,
@@ -58,7 +59,7 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
       key2: undefined,
       key3: undefined,
       key4: undefined,
-      keywords: event.srcAddress,
+      keywords: event.srcAddress.toLowerCase(),
     };
 
     if (!itemMetadata) {

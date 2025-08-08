@@ -1,4 +1,4 @@
-import { LightGeneralizedTCR, LItem, LRequest, LRound } from "generated";
+import { LightGeneralizedTCR, LItem, LRequest } from "generated";
 import {
   CHALLENGER_CODE,
   CLEARING_REQUESTED_CODE,
@@ -9,7 +9,6 @@ import {
   ONE,
   REGISTRATION_REQUESTED_CODE,
   REQUESTER_CODE,
-  ZERO,
 } from "../../utils";
 import { getItemInfo } from "../../utils/contract/getItemInfo";
 import { updateCounters } from "../helpers/updateCounters";
@@ -18,7 +17,8 @@ import { getRequestInfo } from "../../utils/contract/getRequestInfo";
 LightGeneralizedTCR.ItemStatusChange.handlerWithLoader({
   loader: async ({ event, context }) => {
     try {
-      const graphItemID = event.params._itemID + "@" + event.srcAddress;
+      const graphItemID =
+        event.params._itemID + "@" + event.srcAddress.toLowerCase();
 
       // This handler is used to handle transactions to item statuses 0 and 1.
       // All other status updates are handled elsewhere.
@@ -43,7 +43,7 @@ LightGeneralizedTCR.ItemStatusChange.handlerWithLoader({
 
       const [item, registry, request, requestInfo] = await Promise.all([
         context.LItem.get(graphItemID),
-        context.LRegistry.get(event.srcAddress),
+        context.LRegistry.get(event.srcAddress.toLowerCase()),
         context.LRequest.get(requestID),
         context.effect(getRequestInfo, {
           contractAddress: event.srcAddress,
