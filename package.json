@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "axios": "^1.11.0",
-    "envio": "2.27.0",
+    "envio": "2.27.1",
     "viem": "^2.33.0"
   },
   "optionalDependencies": {

@@ -20,8 +20,8 @@ export const fetchEvidenceData = experimental_createEffect(
     input: {
       ipfsHash: S.string,
     },
-    output: S.union([evidenceSchema, S.shape(S.schema(0), (_) => null)]),
-    // cache: true,
+    output: S.union([evidenceSchema, null]),
+    cache: true,
   },
   async ({ input, context }) => {
     const { ipfsHash } = input;
@@ -29,9 +29,9 @@ export const fetchEvidenceData = experimental_createEffect(
     try {
       const data = await tryFetchIpfsFile(ipfsHash, context);
       context.log.warn(`asd: ${JSON.stringify(data)}`);
-      S.assertOrThrow(data, evidenceSchema);
+      const parsed = S.parseOrThrow(data, evidenceSchema);
 
-      return data;
+      return parsed;
     } catch (err) {
       if (err instanceof Error) {
         context.log.error(`Error fetching Evidence Data: ${err.message}`);

@@ -55,10 +55,12 @@ contracts:
       - event: Evidence(address indexed _arbitrator, uint256 indexed _evidenceGroupID, address indexed _party, string _evidence)
       - event: HasPaidAppealFee(bytes32 indexed _itemID, uint256 indexed _request, uint256 indexed _round, uint8 _side)
       - event: ItemStatusChange(bytes32 indexed _itemID, uint256 indexed _requestIndex, uint256 indexed _roundIndex, bool _disputed, bool _resolved)
-      - event: ItemSubmitted(bytes32 indexed _itemID, address indexed _submitter, uint256 indexed _evidenceGroupID, bytes _data)
       - event: MetaEvidence(uint256 indexed _metaEvidenceID, string _evidence)
       - event: RequestEvidenceGroupID(bytes32 indexed _itemID, uint256 indexed _requestIndex, uint256 indexed _evidenceGroupID)
-      - event: RequestSubmitted(bytes32 indexed _itemID, uint256 indexed _requestIndex, uint8 indexed _requestType)
+        field_selection:
+          transaction_fields:
+            - hash
+            - from
       - event: Ruling(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _ruling)
   - name: IArbitrator
     handler: src/mappings/index.ts

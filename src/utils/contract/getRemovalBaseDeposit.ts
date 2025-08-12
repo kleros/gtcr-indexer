@@ -1,5 +1,5 @@
 import { getClient } from "../client";
-import { getLGTCRContract } from "./contracts";
+import { getGTCRContract, getLGTCRContract } from "./contracts";
 import { experimental_createEffect, S } from "envio";
 
 export const getRemovalBaseDeposit = experimental_createEffect(
@@ -9,19 +9,23 @@ export const getRemovalBaseDeposit = experimental_createEffect(
       contractAddress: S.string,
       chainId: S.number,
       blockNumber: S.number,
+      isClassic: S.optional(S.boolean),
     },
     output: S.bigint,
     cache: true,
   },
   async ({ input, context }) => {
-    const { contractAddress, chainId, blockNumber } = input;
-    const lgtcr = getLGTCRContract(contractAddress);
+    const { contractAddress, chainId, blockNumber, isClassic } = input;
+    const contract = isClassic
+      ? getGTCRContract(contractAddress)
+      : getLGTCRContract(contractAddress);
     const client = getClient(chainId);
 
     let result: bigint;
     try {
       result = await client.readContract({
-        ...lgtcr,
+        address: contract.address,
+        abi: contract.abi,
         functionName: "removalBaseDeposit",
         blockNumber: BigInt(blockNumber),
       });

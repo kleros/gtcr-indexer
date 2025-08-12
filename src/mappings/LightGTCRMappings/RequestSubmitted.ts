@@ -28,7 +28,9 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
     });
 
     const evidenceGroupID =
-      event.params._evidenceGroupID + "@" + event.srcAddress.toLowerCase();
+      event.params._evidenceGroupID.toString() +
+      "@" +
+      event.srcAddress.toLowerCase();
     const [
       registry,
       item,
@@ -101,7 +103,7 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
     const request: LRequest = {
       id: requestID,
       disputed: false,
-      arbitrator: requestInfo.requestArbitrator,
+      arbitrator: requestInfo.requestArbitrator.toLowerCase(),
       arbitratorExtraData: requestInfo.requestArbitratorExtraData,
       challenger: ZERO_ADDRESS,
       requester: requestInfo.parties.requester.toLowerCase(),
