@@ -5,7 +5,7 @@ import { ZERO_ADDRESS } from "../..";
 
 export const arbitratorDisputeIDToItem = experimental_createEffect(
   {
-    name: "arbitratorDisputeIDToItem",
+    name: "Classic-arbitratorDisputeIDToItem",
     input: {
       contractAddress: S.string,
       chainId: S.number,

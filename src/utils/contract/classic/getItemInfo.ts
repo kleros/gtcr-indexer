@@ -5,7 +5,7 @@ import { ZERO_ADDRESS } from "../..";
 
 export const getItemInfo = experimental_createEffect(
   {
-    name: "getClassicItemInfo",
+    name: "Classic-getItemInfo",
     input: {
       contractAddress: S.string,
       chainId: S.number,
@@ -35,7 +35,7 @@ export const getItemInfo = experimental_createEffect(
       });
     } catch (error) {
       context.log.error(
-        `Error fetching classic item info: ${itemID}, ${error}`
+        `Error fetching Classic item info: ${itemID}, ${error}`
       );
       results = [ZERO_ADDRESS, 0, 0n];
     }

@@ -11,8 +11,8 @@ import { getRequestInfo } from "../../utils/contract/getRequestInfo";
 import { buildNewClassicRound } from "../helpers/buildRound";
 import { getItemInfo } from "../../utils/contract/classic/getItemInfo";
 import { getArbitrationCost } from "../../utils/contract/getArbitrationCost";
-import { getSubmissionChallengeBaseDeposit } from "../../utils/contract/classic/getSubmissionChallengeBaseDeposit";
-import { getRemovalChallengeBaseDeposit } from "../../utils/contract/classic/getRemovalChallengeBaseDeposit";
+import { getSubmissionBaseDeposit } from "../../utils/contract/classic/getSubmissionBaseDeposit";
+import { getRemovalBaseDeposit } from "../../utils/contract/classic/getRemovalBaseDeposit";
 
 GeneralizedTCR.RequestEvidenceGroupID.handlerWithLoader({
   loader: async ({ event, context }) => {
@@ -53,12 +53,12 @@ GeneralizedTCR.RequestEvidenceGroupID.handlerWithLoader({
         requestIndex: itemInfo.numberOfRequests - ONE,
         isClassic: true,
       }),
-      context.effect(getSubmissionChallengeBaseDeposit, {
+      context.effect(getSubmissionBaseDeposit, {
         contractAddress: event.srcAddress,
         chainId: event.chainId,
         blockNumber: event.block.number,
       }),
-      context.effect(getRemovalChallengeBaseDeposit, {
+      context.effect(getRemovalBaseDeposit, {
         contractAddress: event.srcAddress,
         chainId: event.chainId,
         blockNumber: event.block.number,

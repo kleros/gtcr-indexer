@@ -4,7 +4,7 @@ import { getClient } from "../../client";
 
 export const getRemovalChallengeBaseDeposit = experimental_createEffect(
   {
-    name: "removalChallengeBaseDeposit",
+    name: "Classic-removalChallengeBaseDeposit",
     input: {
       contractAddress: S.string,
       chainId: S.number,

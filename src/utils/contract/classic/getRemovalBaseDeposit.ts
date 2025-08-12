@@ -2,9 +2,9 @@ import { experimental_createEffect, S } from "envio";
 import { getGTCRContract } from "../contracts";
 import { getClient } from "../../client";
 
-export const getSubmissionChallengeBaseDeposit = experimental_createEffect(
+export const getRemovalBaseDeposit = experimental_createEffect(
   {
-    name: "Classic-submissionChallengeBaseDeposit",
+    name: "Classic-removalBaseDeposit",
     input: {
       contractAddress: S.string,
       chainId: S.number,
@@ -22,12 +22,12 @@ export const getSubmissionChallengeBaseDeposit = experimental_createEffect(
     try {
       result = await client.readContract({
         ...gtcr,
-        functionName: "submissionChallengeBaseDeposit",
+        functionName: "removalBaseDeposit",
         blockNumber: BigInt(blockNumber),
       });
     } catch (error) {
       context.log.error(
-        `Error fetching Classic submissionChallengeBaseDeposit info:, ${error}`
+        `Error fetching Classic removalBaseDeposit info:, ${error}`
       );
       result = 0n;
     }
