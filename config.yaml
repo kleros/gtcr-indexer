@@ -56,6 +56,9 @@ contracts:
           transaction_fields:
             - from
       - event: Evidence(address indexed _arbitrator, uint256 indexed _evidenceGroupID, address indexed _party, string _evidence)
+        field_selection:
+          transaction_fields:
+            - hash
       - event: HasPaidAppealFee(bytes32 indexed _itemID, uint256 indexed _request, uint256 indexed _round, uint8 _side)
       - event: ItemStatusChange(bytes32 indexed _itemID, uint256 indexed _requestIndex, uint256 indexed _roundIndex, bool _disputed, bool _resolved)
         field_selection:
