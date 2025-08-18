@@ -1,10 +1,10 @@
-import { IArbitrator } from "generated";
+import { LIArbitrator } from "generated";
 import { arbitratorDisputeIDToItemID } from "../../utils/contract/arbitratorDisputeIDToItemID";
 import { ACCEPT, NONE, ONE, REJECT, ZERO } from "../../utils";
 import { appealPeriod } from "../../utils/contract/appealPeriod";
 import { currentRuling } from "../../utils/contract/currentRuling";
 
-IArbitrator.AppealPossible.handlerWithLoader({
+LIArbitrator.AppealPossible.handlerWithLoader({
   loader: async ({ event, context }) => {
     const [registry, itemID, appealPeriods, ruling] = await Promise.all([
       context.LRegistry.get(event.params._arbitrable.toLowerCase()),

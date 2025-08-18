@@ -1,7 +1,7 @@
 import { Address } from "viem";
 import { ZERO_ADDRESS } from "..";
 import { getClient } from "../client";
-import { getLGTCRContract } from "./contracts";
+import { getGTCRContract, getLGTCRContract } from "./contracts";
 import { experimental_createEffect, S } from "envio";
 
 export const getRequestInfo = experimental_createEffect(
@@ -13,6 +13,7 @@ export const getRequestInfo = experimental_createEffect(
       blockNumber: S.number,
       itemID: S.string,
       requestIndex: S.bigint,
+      isClassic: S.optional(S.boolean),
     },
     output: {
       disputed: S.boolean,
@@ -32,9 +33,17 @@ export const getRequestInfo = experimental_createEffect(
     cache: true,
   },
   async ({ input, context }) => {
-    const { contractAddress, chainId, blockNumber, itemID, requestIndex } =
-      input;
-    const lgtcr = getLGTCRContract(contractAddress);
+    const {
+      contractAddress,
+      chainId,
+      blockNumber,
+      itemID,
+      requestIndex,
+      isClassic,
+    } = input;
+    const contract = isClassic
+      ? getGTCRContract(contractAddress)
+      : getLGTCRContract(contractAddress);
     const client = getClient(chainId);
 
     // disputed, disputeID, submissionTime, resolved, parties, numberOfRounds, ruling, requestArbitrator, requestArbitratorExtraData, metaEvidenceID
@@ -52,7 +61,8 @@ export const getRequestInfo = experimental_createEffect(
     ];
     try {
       results = await client.readContract({
-        ...lgtcr,
+        address: contract.address,
+        abi: contract.abi,
         functionName: "getRequestInfo",
         blockNumber: BigInt(blockNumber),
         args: [itemID as `0x${string}`, requestIndex],

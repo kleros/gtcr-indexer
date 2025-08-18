@@ -81,9 +81,9 @@ LightGeneralizedTCR.MetaEvidence.contractRegister(
       context,
     });
 
-    context.addIArbitrator(arbitratorAddr.toLowerCase());
+    context.addLIArbitrator(arbitratorAddr.toLowerCase());
     context.log.info(
-      `Registered new Arbitrator at ${arbitratorAddr} for ${event.srcAddress}`
+      `Registered new Light Arbitrator at ${arbitratorAddr} for ${event.srcAddress}`
     );
   }
 );

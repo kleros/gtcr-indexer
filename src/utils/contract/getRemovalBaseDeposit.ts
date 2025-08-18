@@ -1,5 +1,5 @@
 import { getClient } from "../client";
-import { getLGTCRContract } from "./contracts";
+import { getGTCRContract, getLGTCRContract } from "./contracts";
 import { experimental_createEffect, S } from "envio";
 
 export const getRemovalBaseDeposit = experimental_createEffect(

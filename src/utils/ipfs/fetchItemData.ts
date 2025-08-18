@@ -13,13 +13,18 @@ const itemMetadataSchema = S.schema({
   values: S.record(S.string),
 });
 
+/**
+ * Fetches Item's data from ipfs uri provided
+ * @param ipfsHash CID of the ipfs file
+ * @example uri https://ipfs.io/ipfs/QmS6iwbxLzCUZuMiRxjpbeAuZUU4BkfXaf6knvXVKJtMK4/item.json
+ */
 export const fetchItemData = experimental_createEffect(
   {
     name: "fetchItemData",
     input: {
       ipfsHash: S.string,
     },
-    output: S.union([itemMetadataSchema, S.shape(S.schema(0), (_) => null)]),
+    output: S.union([itemMetadataSchema, null]),
     cache: true,
   },
   async ({ input, context }) => {
@@ -28,9 +33,9 @@ export const fetchItemData = experimental_createEffect(
     try {
       const metadata = await tryFetchIpfsFile(ipfsHash, context);
 
-      S.assertOrThrow(metadata, itemMetadataSchema);
+      const parsed = S.parseOrThrow(metadata, itemMetadataSchema);
 
-      return metadata;
+      return parsed;
     } catch (err) {
       if (err instanceof Error) {
         context.log.error(`Error fetching Item Metadata: ${err.message}`);

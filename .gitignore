@@ -27,7 +27,7 @@ lib/*
 /node_modules/
 benchmarks/
 artifacts
-cache
+# cache
 generated
 logs
 *.res.js

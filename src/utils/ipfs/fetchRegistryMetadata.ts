@@ -17,16 +17,18 @@ const registryMetadataSchema = S.schema({
   ),
 });
 
+/**
+ * Fetches Registry's metadata from ipfs uri provided
+ * @param ipfsHash CID of the ipfs file
+ * @example uri https://ipfs.io/ipfs/QmdtT3gupJnavSrtyB1fp4r9h1GVSNcYGy3WJxR36X5uPz/reg.json
+ */
 export const fetchRegistryMetadata = experimental_createEffect(
   {
     name: "fetchRegistryMetadata",
     input: {
       ipfsHash: S.string,
     },
-    output: S.union([
-      registryMetadataSchema,
-      S.shape(S.schema(0), (_) => null),
-    ]),
+    output: S.union([registryMetadataSchema, null]),
     cache: true,
   },
   async ({ input, context }) => {
@@ -35,9 +37,9 @@ export const fetchRegistryMetadata = experimental_createEffect(
     try {
       const data = await tryFetchIpfsFile(ipfsHash, context);
 
-      S.assertOrThrow(data, registryMetadataSchema);
+      const parsed = S.parseOrThrow(data, registryMetadataSchema);
 
-      return data;
+      return parsed;
     } catch (err) {
       if (err instanceof Error) {
         context.log.error(`Error fetching Registry Metadata: ${err.message}`);

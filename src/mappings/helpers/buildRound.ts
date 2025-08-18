@@ -1,4 +1,4 @@
-import { LRound } from "generated";
+import { LRound, Round } from "generated";
 import { NONE, ZERO } from "../../utils";
 
 export function buildNewRound(
@@ -22,6 +22,31 @@ export function buildNewRound(
     ruling: NONE,
     creationTime: BigInt(timestamp),
     numberOfContributions: ZERO,
+    appealed: false,
+    appealedAt: undefined,
+    txHashAppealDecision: undefined,
+    txHashAppealPossible: undefined,
+  };
+}
+
+export function buildNewClassicRound(
+  roundID: string,
+  requestId: string,
+  timestamp: number
+): Round {
+  return {
+    id: roundID,
+    amountPaidRequester: ZERO,
+    amountPaidChallenger: ZERO,
+    feeRewards: ZERO,
+    hasPaidRequester: false,
+    hasPaidChallenger: false,
+    request_id: requestId,
+    appealPeriodStart: ZERO,
+    appealPeriodEnd: ZERO,
+    rulingTime: ZERO,
+    ruling: NONE,
+    creationTime: BigInt(timestamp),
     appealed: false,
     appealedAt: undefined,
     txHashAppealDecision: undefined,
