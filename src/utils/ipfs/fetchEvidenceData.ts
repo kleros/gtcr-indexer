@@ -21,7 +21,7 @@ export const fetchEvidenceData = experimental_createEffect(
       ipfsHash: S.string,
     },
     output: S.union([evidenceSchema, null]),
-    cache: true,
+    // cache: true,
   },
   async ({ input, context }) => {
     const { ipfsHash } = input;

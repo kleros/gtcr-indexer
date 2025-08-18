@@ -7,7 +7,7 @@
     "watch": "tsc --watch",
     "mocha": "ts-mocha test/**/*.ts",
     "codegen": "envio codegen",
-    "dev": "export LOG_STRATEGY=both-prettyconsole && export LOG_FILE=../debug.log && envio dev",
+    "dev": "rm debug.log & export LOG_STRATEGY=both-prettyconsole && export LOG_FILE=../debug.log && envio dev",
     "start": "envio start",
     "test": "pnpm mocha",
     "stop": "pnpm envio stop"

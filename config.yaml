@@ -98,5 +98,35 @@ networks:
         start_block: 16969180
       - name: GeneralizedTCR
       - name: IArbitrator
+  - id: 1
+    start_block: 10247117
+    contracts:
+      - name: LightGTCRFactory
+        address:
+          - 0xb9dDC813AcAF3fD7aBC4C16735A09Bc1C0EE0054
+        start_block: 13810085
+      - name: LightGeneralizedTCR
+      - name: LIArbitrator
+      - name: GTCRFactory
+        address:
+          - 0xe9dd523600b74b8ef0af164687079a6c437f9cd5
+        start_block: 10247117
+      - name: GeneralizedTCR
+      - name: IArbitrator
+  - id: 11155111
+    start_block: 4048282
+    contracts:
+      - name: LightGTCRFactory
+        address:
+          - 0x3FB8314C628E9afE7677946D3E23443Ce748Ac17
+        start_block: 4048287
+      - name: LightGeneralizedTCR
+      - name: LIArbitrator
+      - name: GTCRFactory
+        address:
+          - 0xcB4B48d2A7a44247A00048963F169d2b4Ab045a6
+        start_block: 4048282
+      - name: GeneralizedTCR
+      - name: IArbitrator
 
 unordered_multichain_mode: true
