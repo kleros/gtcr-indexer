@@ -1,43 +1,16 @@
-import { LightGTCRFactory, LRegistry, MetaEvidence } from "generated";
-import { ZERO } from "../../utils";
+import { LightGTCRFactory } from "generated";
+import { createRegistry } from "../helpers/createLightRegistry";
 
 LightGTCRFactory.NewGTCR.handler(async ({ event, context }) => {
-  const registrationMetaEvidence: MetaEvidence = {
-    id: `${event.params._address.toLowerCase()}-1`,
-    uri: "",
-  };
+  const registry = await context.LRegistry.get(
+    event.params._address.toLowerCase()
+  );
+  // Registry may already be created from ConnectedTCRSet event
+  if (!registry) {
+    createRegistry(event.params._address, context);
+    return;
+  }
 
-  const clearingMetaEvidence: MetaEvidence = {
-    id: `${event.params._address.toLowerCase()}-2`,
-    uri: "",
-  };
-
-  const registry: LRegistry = {
-    id: event.params._address.toLowerCase(),
-    metaEvidenceCount: ZERO,
-    registrationMetaEvidence_id: registrationMetaEvidence.id,
-    clearingMetaEvidence_id: clearingMetaEvidence.id,
-    numberOfAbsent: ZERO,
-    numberOfRegistered: ZERO,
-    numberOfRegistrationRequested: ZERO,
-    numberOfClearingRequested: ZERO,
-    numberOfChallengedClearing: ZERO,
-    numberOfChallengedRegistrations: ZERO,
-    connectedTCR: undefined,
-    title: undefined,
-    description: undefined,
-    itemName: undefined,
-    itemNamePlural: undefined,
-    isConnectedTCR: undefined,
-    requireRemovalEvidence: undefined,
-    isTCRofTcrs: undefined,
-    parentTCRAddress: undefined,
-    relTcrDisabled: undefined,
-  };
-
-  context.LRegistry.set(registry);
-  context.MetaEvidence.set(registrationMetaEvidence);
-  context.MetaEvidence.set(clearingMetaEvidence);
   return;
 });
 

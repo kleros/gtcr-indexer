@@ -28,6 +28,8 @@ LightGeneralizedTCR.MetaEvidence.handlerWithLoader({
       uri: event.params._evidence,
     });
 
+    context.MetaEvidence.set({ ...metaEvidence, uri: event.params._evidence });
+
     // even/0 for Registration, odd for Clearing
     const isRegistration =
       event.params._metaEvidenceID % BigInt(2) === BigInt(0);

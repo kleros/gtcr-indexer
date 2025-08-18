@@ -1,29 +1,16 @@
-import { GTCRFactory, MetaEvidence, Registry } from "generated";
-import { ZERO } from "../../utils";
+import { GTCRFactory } from "generated";
+import { createRegistry } from "../helpers/createClassicRegistry";
 
 GTCRFactory.NewGTCR.handler(async ({ event, context }) => {
-  const registrationMetaEvidence: MetaEvidence = {
-    id: `${event.params._address.toLowerCase()}-1`,
-    uri: "",
-  };
+  const registry = await context.Registry.get(
+    event.params._address.toLowerCase()
+  );
+  // Registry may already be created from MetaEvidence event
+  if (!registry) {
+    createRegistry(event.params._address, context);
+    return;
+  }
 
-  const clearingMetaEvidence: MetaEvidence = {
-    id: `${event.params._address.toLowerCase()}-2`,
-    uri: "",
-  };
-
-  const registry: Registry = {
-    id: event.params._address.toLowerCase(),
-    metaEvidenceCount: ZERO,
-    registrationMetaEvidence_id: registrationMetaEvidence.id,
-    clearingMetaEvidence_id: clearingMetaEvidence.id,
-    connectedTCR: undefined,
-    numberOfItems: ZERO,
-  };
-
-  context.Registry.set(registry);
-  context.MetaEvidence.set(registrationMetaEvidence);
-  context.MetaEvidence.set(clearingMetaEvidence);
   return;
 });
 
