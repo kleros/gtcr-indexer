@@ -6,8 +6,13 @@ import { currentRuling } from "../../utils/contract/currentRuling";
 
 IArbitrator.AppealPossible.handlerWithLoader({
   loader: async ({ event, context }) => {
-    const [registry, itemID, appealPeriods, ruling] = await Promise.all([
-      context.Registry.get(event.params._arbitrable.toLowerCase()),
+    const registry = await context.Registry.get(
+      event.params._arbitrable.toLowerCase()
+    );
+    // not related to GTCR
+    if (!registry) return;
+
+    const [itemID, appealPeriods, ruling] = await Promise.all([
       context.effect(arbitratorDisputeIDToItem, {
         contractAddress: event.params._arbitrable,
         chainId: event.chainId,
@@ -28,8 +33,6 @@ IArbitrator.AppealPossible.handlerWithLoader({
         disputeID: event.params._disputeID,
       }),
     ]);
-    // not related to GTCR
-    if (!registry) return;
 
     const graphItemID = itemID + "@" + event.params._arbitrable.toLowerCase();
 
