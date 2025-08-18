@@ -1,3 +1,3 @@
-import { gnosis } from "viem/chains";
+import { gnosis, mainnet, sepolia } from "viem/chains";
 
-export const chains = [gnosis];
+export const chains = [gnosis, mainnet, sepolia];

@@ -5,20 +5,22 @@ import { buildNewRound } from "../helpers/buildRound";
 
 LIArbitrator.AppealDecision.handlerWithLoader({
   loader: async ({ event, context }) => {
-    const [registry, itemID] = await Promise.all([
-      context.LRegistry.get(event.params._arbitrable.toLowerCase()),
-      context.effect(arbitratorDisputeIDToItemID, {
-        contractAddress: event.params._arbitrable,
-        chainId: event.chainId,
-        blockNumber: event.block.number,
-        disputeID: event.params._disputeID,
-        arbitrator: event.srcAddress,
-      }),
-    ]);
+    const registry = await context.LRegistry.get(
+      event.params._arbitrable.toLowerCase()
+    );
+
     // event not related to LGTCR
     if (!registry) {
       return;
     }
+    const itemID = await context.effect(arbitratorDisputeIDToItemID, {
+      contractAddress: event.params._arbitrable,
+      chainId: event.chainId,
+      blockNumber: event.block.number,
+      disputeID: event.params._disputeID,
+      arbitrator: event.srcAddress,
+    });
+
     const graphItemID = itemID + "@" + event.params._arbitrable.toLowerCase();
 
     const item = await context.LItem.get(graphItemID);

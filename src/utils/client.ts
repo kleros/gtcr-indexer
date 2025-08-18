@@ -12,7 +12,8 @@ const clients = chains.reduce<Record<number, PublicClient>>((acc, chain) => {
     chain,
     // TODO: provide more RPC's
     transport: fallback([http(RPCS[chain.id], { batch: true })], {
-      retryCount: 3,
+      retryCount: 7,
+      retryDelay: 500,
     }),
     batch: {
       multicall: true,

@@ -4,18 +4,19 @@ import { arbitratorDisputeIDToItem } from "../../utils/contract/classic/arbitrat
 
 IArbitrator.AppealDecision.handlerWithLoader({
   loader: async ({ event, context }) => {
-    const [registry, itemID] = await Promise.all([
-      context.Registry.get(event.params._arbitrable.toLowerCase()),
-      context.effect(arbitratorDisputeIDToItem, {
-        contractAddress: event.params._arbitrable,
-        chainId: event.chainId,
-        blockNumber: event.block.number,
-        arbitrator: event.srcAddress,
-        disputeID: event.params._disputeID,
-      }),
-    ]);
+    const registry = await context.Registry.get(
+      event.params._arbitrable.toLowerCase()
+    );
     // not related to GTCR
     if (!registry) return;
+
+    const itemID = await context.effect(arbitratorDisputeIDToItem, {
+      contractAddress: event.params._arbitrable,
+      chainId: event.chainId,
+      blockNumber: event.block.number,
+      arbitrator: event.srcAddress,
+      disputeID: event.params._disputeID,
+    });
 
     const graphItemID = itemID + "@" + event.params._arbitrable.toLowerCase();
 
