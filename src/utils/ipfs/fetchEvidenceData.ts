@@ -21,14 +21,14 @@ export const fetchEvidenceData = experimental_createEffect(
       ipfsHash: S.string,
     },
     output: S.union([evidenceSchema, null]),
-    // cache: true,
+    cache: true,
   },
   async ({ input, context }) => {
     const { ipfsHash } = input;
 
     try {
       const data = await tryFetchIpfsFile(ipfsHash, context);
-      context.log.warn(`asd: ${JSON.stringify(data)}`);
+
       const parsed = S.parseOrThrow(data, evidenceSchema);
 
       return parsed;
