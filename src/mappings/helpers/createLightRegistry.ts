@@ -1,9 +1,9 @@
-import { HandlerContext, LRegistry, MetaEvidence } from "generated";
+import { handlerContext, LRegistry, MetaEvidence } from "generated";
 import { ZERO } from "../../utils";
 
 export const createRegistry = (
   registryAddress: string,
-  context: HandlerContext
+  context: handlerContext
 ) => {
   const registrationMetaEvidence: MetaEvidence = {
     id: `${registryAddress.toLowerCase()}-1`,
