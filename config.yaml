@@ -2,11 +2,11 @@
 name: gtcr-indexer
 contracts:
   - name: LightGTCRFactory
-    handler: src/mappings/LGTCRMappings.ts
+    handler: src/mappings/lgtcr.ts
     events:
       - event: NewGTCR(address indexed _address)
   - name: LightGeneralizedTCR
-    handler: src/mappings/LGTCRMappings.ts
+    handler: src/mappings/lgtcr.ts
     events:
       - event: ConnectedTCRSet(address indexed _connectedTCR)
       - event: Contribution(bytes32 indexed _itemID, uint256 _requestID, uint256 _roundID, address indexed _contributor, uint256 _contribution, uint8 _side)
@@ -32,7 +32,7 @@ contracts:
       - event: RewardWithdrawn(address indexed _beneficiary, bytes32 indexed _itemID, uint256 _request, uint256 _round, uint256 _reward)
       - event: Ruling(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _ruling)
   - name: LIArbitrator
-    handler: src/mappings/LGTCRMappings.ts
+    handler: src/mappings/lgtcr.ts
     events:
       - event: AppealPossible(uint256 indexed _disputeID, address indexed _arbitrable)
         field_selection:
@@ -43,11 +43,11 @@ contracts:
           transaction_fields:
             - hash
   - name: GTCRFactory
-    handler: src/mappings/GTCRMappings.ts
+    handler: src/mappings/gtcr.ts
     events:
       - event: NewGTCR(address indexed _address)
   - name: GeneralizedTCR
-    handler: src/mappings/GTCRMappings.ts
+    handler: src/mappings/gtcr.ts
     events:
       - event: AppealContribution(bytes32 indexed _itemID, address indexed _contributor, uint256 indexed _request, uint256 _round, uint256 _amount, uint8 _side)
       - event: ConnectedTCRSet(address indexed _connectedTCR)
@@ -72,7 +72,7 @@ contracts:
             - from
       - event: Ruling(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _ruling)
   - name: IArbitrator
-    handler: src/mappings/GTCRMappings.ts
+    handler: src/mappings/gtcr.ts
     events:
       - event: AppealPossible(uint256 indexed _disputeID, address indexed _arbitrable)
         field_selection:
