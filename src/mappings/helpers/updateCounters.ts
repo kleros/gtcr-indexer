@@ -23,12 +23,12 @@ export async function updateCounters(
   previousStatus: number,
   newStatus: number,
   registry: LRegistry,
-  context: handlerContext
+  context: handlerContext,
+  updatedDirectly = false
 ) {
   if (!registry) {
     return;
   }
-
   type Key =
     | "numberOfAbsent"
     | "numberOfRegistered"
@@ -66,9 +66,14 @@ export async function updateCounters(
     incrementKey = "numberOfChallengedClearing";
   }
 
+  let decrement = {};
+
+  if (!updatedDirectly) {
+    decrement = { [decrementKey]: registry[decrementKey] - ONE };
+  }
   context.LRegistry.set({
     ...registry,
-    [decrementKey]: registry[decrementKey] - ONE,
     [incrementKey]: registry[incrementKey] + ONE,
+    ...decrement,
   });
 }

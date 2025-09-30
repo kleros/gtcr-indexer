@@ -71,7 +71,13 @@ LightGeneralizedTCR.ItemStatusChange.handlerWithLoader({
       const previousStatus = getExtendedStatus(item.disputed, item.status);
       const newStatus = getExtendedStatus(false, getStatus(itemInfo.status));
       if (previousStatus !== newStatus) {
-        updateCounters(previousStatus, newStatus, registry, context);
+        updateCounters(
+          previousStatus,
+          newStatus,
+          registry,
+          context,
+          event.params._updatedDirectly
+        );
       }
 
       if (event.params._updatedDirectly) {
@@ -106,14 +112,13 @@ LightGeneralizedTCR.ItemStatusChange.handlerWithLoader({
       for (let i = 1; i < Number(request.numberOfRounds); i++) {
         // Iterate over every round of the request.
         const roundID = requestID + "-" + i.toString();
-        const round = await context.LRound.getOrThrow(roundID);
-
+        const round = await context.LRound.get(roundID);
+        if (!round) continue;
         for (let j = 0; j < Number(round.numberOfContributions); j++) {
           // Iterate over every contribution of the round.
           const contributionID = roundID + "-" + j.toString();
-          const contribution = await context.LContribution.getOrThrow(
-            contributionID
-          );
+          const contribution = await context.LContribution.get(contributionID);
+          if (!contribution) continue;
           let withdrawable = false;
           if (requestInfo.ruling == NO_RULING_CODE) {
             // The final ruling is refuse to rule. There is no winner

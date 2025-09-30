@@ -1,13 +1,11 @@
 import { ItemProp, LightGeneralizedTCR, LItem } from "generated";
 import {
   extractPath,
-  getStatus,
   JSONValueToBool,
   JSONValueToMaybeString,
   ZERO,
   ZERO_ADDRESS,
 } from "../../utils";
-import { getItemInfo } from "../../utils/contract/getItemInfo";
 import { fetchItemData } from "../../utils/ipfs/fetchItemData";
 
 // We assume this is an item added via addItemDirectly and care
@@ -22,14 +20,8 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
   loader: async ({ event, context }) => {
     const ipfsHash = extractPath(event.params._data);
 
-    const [registry, itemInfo, itemMetadata] = await Promise.all([
+    const [registry, itemMetadata] = await Promise.all([
       context.LRegistry.get(event.srcAddress.toLowerCase()),
-      context.effect(getItemInfo, {
-        contractAddress: event.srcAddress,
-        chainId: event.chainId,
-        blockNumber: event.block.number,
-        itemID: event.params._itemID,
-      }),
       context.effect(fetchItemData, { ipfsHash }),
     ]);
 
@@ -49,7 +41,7 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
       registry_id: registry.id,
       registryAddress: event.srcAddress.toLowerCase(),
       disputed: false,
-      status: getStatus(itemInfo.status),
+      status: "Absent",
       latestRequester: ZERO_ADDRESS,
       latestChallenger: ZERO_ADDRESS,
       latestRequestSubmissionTime: ZERO,
