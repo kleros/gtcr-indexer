@@ -220,7 +220,7 @@ src/
 # Development
 pnpm dev              # Start development server with hot reload
 pnpm start            # Start production server
-pnpm stop             # Stop the indexer
+pnpm envio stop       # Stop the indexer
 
 # Code Generation
 pnpm codegen          # Generate types from schema and config
