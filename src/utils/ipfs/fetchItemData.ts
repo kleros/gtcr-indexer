@@ -10,7 +10,9 @@ const itemMetadataSchema = S.schema({
       type: S.string,
     })
   ),
-  values: S.record(S.string),
+  values: S.record(
+    S.union([S.string, S.number, S.boolean, S.bigint, S.array, S.object])
+  ),
 });
 
 /**
