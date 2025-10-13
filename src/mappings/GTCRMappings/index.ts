@@ -6,6 +6,4 @@ import "./HasPaidAppealFee";
 import "./Ruling";
 import "./ConnectedTCRSet";
 import "./MetaEvidence";
-import "./AppealPossible";
-import "./AppealDecision";
 import "./Evidence";

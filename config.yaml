@@ -31,17 +31,6 @@ contracts:
             - hash
       - event: RewardWithdrawn(address indexed _beneficiary, bytes32 indexed _itemID, uint256 _request, uint256 _round, uint256 _reward)
       - event: Ruling(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _ruling)
-  - name: LIArbitrator
-    handler: src/mappings/lgtcr.ts
-    events:
-      - event: AppealPossible(uint256 indexed _disputeID, address indexed _arbitrable)
-        field_selection:
-          transaction_fields:
-            - hash
-      - event: AppealDecision(uint256 indexed _disputeID, address indexed _arbitrable)
-        field_selection:
-          transaction_fields:
-            - hash
   - name: GTCRFactory
     handler: src/mappings/gtcr.ts
     events:
@@ -72,7 +61,7 @@ contracts:
             - from
       - event: Ruling(address indexed _arbitrator, uint256 indexed _disputeID, uint256 _ruling)
   - name: IArbitrator
-    handler: src/mappings/gtcr.ts
+    handler: src/mappings/Arbitrator/index.ts
     events:
       - event: AppealPossible(uint256 indexed _disputeID, address indexed _arbitrable)
         field_selection:
@@ -91,7 +80,6 @@ networks:
           - 0x08e58Bc26CFB0d346bABD253A1799866F269805a
         start_block: 19592773
       - name: LightGeneralizedTCR
-      - name: LIArbitrator
       - name: GTCRFactory
         address:
           - 0x794Cee5a6e1501b633eC13b8c1e327d9860FE039
@@ -106,7 +94,6 @@ networks:
           - 0xb9dDC813AcAF3fD7aBC4C16735A09Bc1C0EE0054
         start_block: 13810085
       - name: LightGeneralizedTCR
-      - name: LIArbitrator
       - name: GTCRFactory
         address:
           - 0xe9dd523600b74b8ef0af164687079a6c437f9cd5
@@ -121,7 +108,6 @@ networks:
           - 0x3FB8314C628E9afE7677946D3E23443Ce748Ac17
         start_block: 4048287
       - name: LightGeneralizedTCR
-      - name: LIArbitrator
       - name: GTCRFactory
         address:
           - 0xcB4B48d2A7a44247A00048963F169d2b4Ab045a6
