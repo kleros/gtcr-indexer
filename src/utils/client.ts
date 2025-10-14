@@ -2,7 +2,10 @@ import { createPublicClient, fallback, http, PublicClient } from "viem";
 import { chains } from "../constants";
 
 const RPCS = {
-  1: [process.env.ENVIO_MAINNET_RPC_URL],
+  1: [
+    process.env.ENVIO_MAINNET_RPC_URL,
+    process.env.ENVIO_MAINNET_FALLBACK_RPC_URL,
+  ],
   100: [
     process.env.ENVIO_GNOSIS_RPC_URL,
     process.env.ENVIO_GNOSIS_FALLBACK_RPC_URL,
