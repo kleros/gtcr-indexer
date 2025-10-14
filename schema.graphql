@@ -85,6 +85,8 @@ type Registry {
   numberOfItems: BigInt!
   "Connected TCR. Can be the 0 address. In practice, will never be null."
   connectedTCR: Bytes
+  "Chain this Registry is deployed on"
+  chainId: Int!
 }
 
 type LRegistry {
@@ -113,6 +115,8 @@ type LRegistry {
   numberOfChallengedClearing: BigInt!
   "Connected TCR. Can be the 0 address. In practice, will never be null."
   connectedTCR: Bytes
+  "Chain this Registry is deployed on"
+  chainId: Int!
   title: String
   description: String
   itemName: String
@@ -172,6 +176,8 @@ type LItem {
   key4: String
   "The item identifiers combined as a single string."
   keywords: String
+  "Chain identifier"
+  chainId: Int!
 }
 
 type ItemProp {
@@ -231,6 +237,8 @@ type LRequest {
   creationTx: Bytes!
   "The hash of the transaction that solved this request."
   resolutionTx: Bytes
+  "Chain this Request was made on"
+  chainId: Int!
 }
 
 type LRound {
@@ -286,6 +294,8 @@ type LContribution {
   withdrawable: Boolean!
   "To which side the contribution was made."
   side: BigInt!
+  "Chain identifier"
+  chainId: Int!
 }
 
 type Round {
@@ -350,6 +360,8 @@ type Item {
   latestRequester: Bytes!
   "The account that challenged the latest request, if any."
   latestChallenger: Bytes!
+  "Chain identifier"
+  chainId: Int!
 }
 
 type Request {
@@ -399,6 +411,8 @@ type Request {
   creationTx: Bytes!
   "The hash of the transaction that solved this request."
   resolutionTx: Bytes
+  "Chain identifier"
+  chainId: Int!
 }
 
 type HasPaidAppealFee {

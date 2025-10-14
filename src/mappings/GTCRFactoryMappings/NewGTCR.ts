@@ -7,7 +7,7 @@ GTCRFactory.NewGTCR.handler(async ({ event, context }) => {
   );
   // Registry may already be created from MetaEvidence event
   if (!registry) {
-    createRegistry(event.params._address, context);
+    createRegistry(event.params._address, event.chainId, context);
     return;
   }
 

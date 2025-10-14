@@ -3,6 +3,7 @@ import { ZERO } from "../../utils";
 
 export const createRegistry = (
   registryAddress: string,
+  chainId: number,
   context: handlerContext
 ) => {
   const registrationMetaEvidence: MetaEvidence = {
@@ -17,6 +18,7 @@ export const createRegistry = (
 
   const registry: LRegistry = {
     id: registryAddress.toLowerCase(),
+    chainId,
     metaEvidenceCount: ZERO,
     registrationMetaEvidence_id: registrationMetaEvidence.id,
     clearingMetaEvidence_id: clearingMetaEvidence.id,

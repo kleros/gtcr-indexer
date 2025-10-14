@@ -80,6 +80,7 @@ GeneralizedTCR.RequestEvidenceGroupID.handlerWithLoader({
     if (!item) {
       context.Item.set({
         id: graphItemID,
+        chainId: event.chainId,
         itemID: event.params._itemID,
         data: itemInfo.data,
         numberOfRequests: ONE,
@@ -129,6 +130,7 @@ GeneralizedTCR.RequestEvidenceGroupID.handlerWithLoader({
 
     const request: Request = {
       id: requestID,
+      chainId: event.chainId,
       disputed: false,
       arbitrator: requestInfo.requestArbitrator.toLowerCase(),
       arbitratorExtraData: requestInfo.requestArbitratorExtraData,

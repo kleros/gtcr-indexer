@@ -35,6 +35,7 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
 
     const contribution: LContribution = {
       id: roundID + "-" + round.numberOfContributions.toString(),
+      chainId: event.chainId,
       round_id: roundID,
       side: event.params._side,
       withdrawable: false,

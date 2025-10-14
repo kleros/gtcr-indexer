@@ -35,6 +35,7 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
 
     const item: LItem = {
       id: graphItemID,
+      chainId: event.chainId,
       itemID: event.params._itemID,
       data: event.params._data,
       numberOfRequests: ZERO,

@@ -11,6 +11,7 @@ LightGeneralizedTCR.ConnectedTCRSet.handlerWithLoader({
     if (!registry) {
       const { registry: newRegistry } = createRegistry(
         event.srcAddress,
+        event.chainId,
         context
       );
       context.LRegistry.set({

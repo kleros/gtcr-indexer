@@ -11,6 +11,7 @@ GeneralizedTCR.MetaEvidence.handlerWithLoader({
     if (!registry) {
       const { registry: newRegistry } = createRegistry(
         event.srcAddress,
+        event.chainId,
         context
       );
       registry = newRegistry;

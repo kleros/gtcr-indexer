@@ -102,6 +102,7 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
 
     const request: LRequest = {
       id: requestID,
+      chainId: event.chainId,
       disputed: false,
       arbitrator: requestInfo.requestArbitrator.toLowerCase(),
       arbitratorExtraData: requestInfo.requestArbitratorExtraData,
