@@ -18,13 +18,12 @@ IArbitrator.AppealDecision.handlerWithLoader({
 
     // related to GTCR
     if (registry) {
-      handlerClassicAppealDecision(context, event);
+      await handlerClassicAppealDecision(context, event);
     }
     // related to LGTCR
     else if (lregistry) {
-      handleLightAppealDecision(context, event, lregistry);
+      await handleLightAppealDecision(context, event, lregistry);
     }
-    return;
   },
   handler: async ({ event, context, loaderReturn }) => {},
 });
