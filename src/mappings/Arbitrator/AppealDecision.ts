@@ -113,11 +113,7 @@ const handleLightAppealDecision = async (
   }
 
   const newRoundID = request.id + "-" + request.numberOfRounds.toString();
-  const newRound = buildNewRound(
-    newRoundID,
-    registry.id,
-    event.block.timestamp
-  );
+  const newRound = buildNewRound(newRoundID, request.id, event.block.timestamp);
 
   context.LRound.set(newRound);
   context.LRound.set({
