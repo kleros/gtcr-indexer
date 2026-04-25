@@ -26,6 +26,8 @@ export function buildNewRound(
     appealedAt: undefined,
     txHashAppealDecision: undefined,
     txHashAppealPossible: undefined,
+    txHashAppealFundedRequester: undefined,
+    txHashAppealFundedChallenger: undefined,
   };
 }
 
