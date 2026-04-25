@@ -237,6 +237,10 @@ type LRequest {
   creationTx: Bytes!
   "The hash of the transaction that solved this request."
   resolutionTx: Bytes
+  "The tx hash of the challenge that raised the dispute."
+  txHashChallenge: Bytes
+  "The block timestamp of the challenge."
+  challengeTime: BigInt
   "Chain this Request was made on"
   chainId: Int!
 }
@@ -271,6 +275,10 @@ type LRound {
   txHashAppealPossible: Bytes
   "The tx hash of the moment the round was appealed"
   txHashAppealDecision: Bytes
+  "The tx hash of the moment the requester's appeal became fully funded."
+  txHashAppealFundedRequester: Bytes
+  "The tx hash of the moment the challenger's appeal became fully funded."
+  txHashAppealFundedChallenger: Bytes
   "The moment the round was created."
   creationTime: BigInt!
   "The contributions made to this round."
