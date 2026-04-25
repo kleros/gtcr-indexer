@@ -73,6 +73,8 @@ LightGeneralizedTCR.Dispute.handlerWithLoader({
       challenger: requestInfo.parties.challenger.toLowerCase(),
       numberOfRounds: BigInt(2),
       disputeID: event.params._disputeID,
+      txHashChallenge: event.transaction.hash,
+      challengeTime: BigInt(event.block.timestamp),
     };
 
     const newRoundID = requestID + "-1"; // When a dispute is created, the new round is always id 1
