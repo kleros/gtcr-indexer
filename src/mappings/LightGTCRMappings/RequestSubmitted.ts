@@ -130,6 +130,8 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
       creationTx: event.transaction.hash,
       resolutionTx: undefined,
       finalRuling: undefined,
+      txHashChallenge: undefined,
+      challengeTime: undefined,
     };
 
     const roundID = requestID + "-0";
