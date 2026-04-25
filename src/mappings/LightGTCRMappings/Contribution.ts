@@ -64,6 +64,17 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
       feeRewards = roundInfo?.feeRewards;
     }
 
+    // Capture the moment each side's appeal becomes fully funded. Only meaningful
+    // for appeal rounds (roundID > 0); round 0 holds submission/challenge deposits.
+    const appealFullyFundedByRequesterNow =
+      event.params._roundID !== ZERO &&
+      !round.hasPaidRequester &&
+      hasPaidRequester;
+    const appealFullyFundedByChallengerNow =
+      event.params._roundID !== ZERO &&
+      !round.hasPaidChallenger &&
+      hasPaidChallenger;
+
     const updatedRound: LRound = {
       ...round,
       amountPaidRequester,
@@ -80,6 +91,12 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
         event.params._side === ONE
           ? round.lastFundedChallenger
           : BigInt(event.block.timestamp),
+      txHashAppealFundedRequester: appealFullyFundedByRequesterNow
+        ? event.transaction.hash
+        : round.txHashAppealFundedRequester,
+      txHashAppealFundedChallenger: appealFullyFundedByChallengerNow
+        ? event.transaction.hash
+        : round.txHashAppealFundedChallenger,
     };
 
     context.LContribution.set(contribution);
