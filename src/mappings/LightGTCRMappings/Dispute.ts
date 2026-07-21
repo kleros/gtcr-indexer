@@ -1,12 +1,14 @@
-import { LightGeneralizedTCR, LItem, LRequest } from "generated";
+import { indexer, LightGeneralizedTCR, LItem, LRequest } from "envio";
 import { getExtendedStatus, ONE, ZERO_ADDRESS } from "../../utils";
 import { arbitratorDisputeIDToItemID } from "../../utils/contract/arbitratorDisputeIDToItemID";
 import { getRequestInfo } from "../../utils/contract/getRequestInfo";
 import { updateCounters } from "../helpers/updateCounters";
 import { buildNewRound } from "../helpers/buildRound";
 
-LightGeneralizedTCR.Dispute.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "Dispute" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const itemID = await context.effect(arbitratorDisputeIDToItemID, {
       contractAddress: event.srcAddress,
       chainId: event.chainId,
@@ -87,7 +89,7 @@ LightGeneralizedTCR.Dispute.handlerWithLoader({
     context.LItem.set(updatedItem);
     context.LRequest.set(updatedRequest);
     context.LRound.set(newRound);
-  },
+  })({ event, context });
 
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  }
+);

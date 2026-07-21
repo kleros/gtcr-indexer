@@ -1,4 +1,4 @@
-import { LightGeneralizedTCR, LItem, LRequest } from "generated";
+import { indexer, LightGeneralizedTCR, LItem, LRequest } from "envio";
 import {
   CHALLENGER_CODE,
   CLEARING_REQUESTED_CODE,
@@ -14,8 +14,10 @@ import { getItemInfo } from "../../utils/contract/getItemInfo";
 import { updateCounters } from "../helpers/updateCounters";
 import { getRequestInfo } from "../../utils/contract/getRequestInfo";
 
-LightGeneralizedTCR.ItemStatusChange.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "ItemStatusChange" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     try {
       const graphItemID =
         event.params._itemID + "@" + event.srcAddress.toLowerCase();
@@ -168,7 +170,7 @@ LightGeneralizedTCR.ItemStatusChange.handlerWithLoader({
       }
       context.log.error(`${error}`);
     }
-  },
+  })({ event, context });
 
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  }
+);

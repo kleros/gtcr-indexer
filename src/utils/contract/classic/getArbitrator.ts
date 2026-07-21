@@ -1,4 +1,4 @@
-import { contractRegistrations } from "generated";
+import { contractRegistrations } from "envio";
 import { getGTCRContract } from "../contracts";
 import { getClient } from "../../client";
 import { ZERO_ADDRESS } from "../..";

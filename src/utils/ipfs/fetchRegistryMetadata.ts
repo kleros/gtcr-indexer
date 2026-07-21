@@ -1,4 +1,4 @@
-import { experimental_createEffect, S } from "envio";
+import { createEffect, S } from "envio";
 import { tryFetchIpfsFile } from ".";
 
 const registryMetadataSchema = S.schema({
@@ -22,7 +22,7 @@ const registryMetadataSchema = S.schema({
  * @param ipfsHash CID of the ipfs file
  * @example uri https://ipfs.io/ipfs/QmdtT3gupJnavSrtyB1fp4r9h1GVSNcYGy3WJxR36X5uPz/reg.json
  */
-export const fetchRegistryMetadata = experimental_createEffect(
+export const fetchRegistryMetadata = createEffect(
   {
     name: "fetchRegistryMetadata",
     input: {

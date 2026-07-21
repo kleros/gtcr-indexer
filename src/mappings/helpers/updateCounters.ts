@@ -1,4 +1,4 @@
-import { handlerContext, LRegistry } from "generated";
+import { EvmOnEventContext, LRegistry } from "envio";
 import {
   ABSENT_CODE,
   CHALLENGED_CLEARING_REQUEST_CODE,
@@ -23,7 +23,7 @@ export async function updateCounters(
   previousStatus: number,
   newStatus: number,
   registry: LRegistry,
-  context: handlerContext,
+  context: EvmOnEventContext,
   updatedDirectly = false
 ) {
   if (!registry) {

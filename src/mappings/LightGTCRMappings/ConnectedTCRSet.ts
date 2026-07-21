@@ -1,8 +1,10 @@
-import { LightGeneralizedTCR } from "generated";
+import { indexer, LightGeneralizedTCR } from "envio";
 import { createRegistry } from "../helpers/createLightRegistry";
 
-LightGeneralizedTCR.ConnectedTCRSet.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "ConnectedTCRSet" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const registry = await context.LRegistry.get(
       event.srcAddress.toLowerCase()
     );
@@ -25,7 +27,7 @@ LightGeneralizedTCR.ConnectedTCRSet.handlerWithLoader({
       ...registry,
       connectedTCR: event.params._connectedTCR.toLowerCase(),
     });
-  },
+  })({ event, context });
 
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  }
+);

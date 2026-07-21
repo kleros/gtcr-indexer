@@ -1,10 +1,10 @@
-import { handlerContext, LRegistry, MetaEvidence } from "generated";
+import { EvmOnEventContext, LRegistry, MetaEvidence } from "envio";
 import { ZERO } from "../../utils";
 
 export const createRegistry = (
   registryAddress: string,
   chainId: number,
-  context: handlerContext
+  context: EvmOnEventContext
 ) => {
   const registrationMetaEvidence: MetaEvidence = {
     id: `${registryAddress.toLowerCase()}-1`,

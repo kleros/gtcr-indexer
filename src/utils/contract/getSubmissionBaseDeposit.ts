@@ -1,8 +1,8 @@
 import { getClient } from "../client";
 import { getLGTCRContract } from "./contracts";
-import { experimental_createEffect, S } from "envio";
+import { createEffect, S } from "envio";
 
-export const getSubmissionBaseDeposit = experimental_createEffect(
+export const getSubmissionBaseDeposit = createEffect(
   {
     name: "submissionBaseDeposit",
     input: {

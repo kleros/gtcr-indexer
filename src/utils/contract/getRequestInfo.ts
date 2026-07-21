@@ -2,9 +2,9 @@ import { Address } from "viem";
 import { ZERO_ADDRESS } from "..";
 import { getClient } from "../client";
 import { getGTCRContract, getLGTCRContract } from "./contracts";
-import { experimental_createEffect, S } from "envio";
+import { createEffect, S } from "envio";
 
-export const getRequestInfo = experimental_createEffect(
+export const getRequestInfo = createEffect(
   {
     name: "getRequestInfo",
     input: {

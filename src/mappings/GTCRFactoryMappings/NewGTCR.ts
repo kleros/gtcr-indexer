@@ -1,7 +1,9 @@
-import { GTCRFactory } from "generated";
+import { indexer, GTCRFactory } from "envio";
 import { createRegistry } from "../helpers/createClassicRegistry";
 
-GTCRFactory.NewGTCR.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "GTCRFactory", event: "NewGTCR" },
+  async ({ event, context }) => {
   const registry = await context.Registry.get(
     event.params._address.toLowerCase()
   );
@@ -12,9 +14,13 @@ GTCRFactory.NewGTCR.handler(async ({ event, context }) => {
   }
 
   return;
-});
+}
+);
 
-GTCRFactory.NewGTCR.contractRegister(({ event, context }) => {
-  context.addGeneralizedTCR(event.params._address.toLowerCase());
+indexer.contractRegister(
+  { contract: "GTCRFactory", event: "NewGTCR" },
+  async ({ event, context }) => {
+  context.chain.GeneralizedTCR.add(event.params._address.toLowerCase());
   context.log.info(`Registered new Registry at ${event.params._address}`);
-});
+}
+);

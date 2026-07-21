@@ -1,4 +1,4 @@
-import { LContribution, LightGeneralizedTCR, LRound } from "generated";
+import { indexer, LContribution, LightGeneralizedTCR, LRound } from "envio";
 import { getRoundInfo } from "../../utils/contract/getRoundInfo";
 import { ONE, ZERO } from "../../utils";
 
@@ -6,8 +6,10 @@ import { ONE, ZERO } from "../../utils";
 // - When a user places a request
 // - When a user challenges a request
 // - When a user funds a side of an appeal.
-LightGeneralizedTCR.Contribution.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "Contribution" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const graphItemID =
       event.params._itemID.toLowerCase() + "@" + event.srcAddress.toLowerCase();
 
@@ -101,7 +103,7 @@ LightGeneralizedTCR.Contribution.handlerWithLoader({
 
     context.LContribution.set(contribution);
     context.LRound.set(updatedRound);
-  },
+  })({ event, context });
 
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  }
+);

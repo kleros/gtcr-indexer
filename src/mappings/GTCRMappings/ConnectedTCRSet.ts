@@ -1,7 +1,9 @@
-import { GeneralizedTCR } from "generated";
+import { indexer, GeneralizedTCR } from "envio";
 
-GeneralizedTCR.ConnectedTCRSet.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "GeneralizedTCR", event: "ConnectedTCRSet" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const registry = await context.Registry.get(event.srcAddress.toLowerCase());
 
     if (!registry) {
@@ -14,6 +16,7 @@ GeneralizedTCR.ConnectedTCRSet.handlerWithLoader({
       ...registry,
       connectedTCR: event.params._connectedTCR.toLowerCase(),
     });
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);

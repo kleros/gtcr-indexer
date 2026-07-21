@@ -1,4 +1,4 @@
-import { GeneralizedTCR, Request } from "generated";
+import { indexer, GeneralizedTCR, Request } from "envio";
 import {
   getStatus,
   NONE,
@@ -14,8 +14,10 @@ import { getArbitrationCost } from "../../utils/contract/getArbitrationCost";
 import { getSubmissionBaseDeposit } from "../../utils/contract/classic/getSubmissionBaseDeposit";
 import { getRemovalBaseDeposit } from "../../utils/contract/classic/getRemovalBaseDeposit";
 
-GeneralizedTCR.RequestEvidenceGroupID.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "GeneralizedTCR", event: "RequestEvidenceGroupID" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const graphItemID =
       event.params._itemID + "@" + event.srcAddress.toLowerCase();
 
@@ -163,6 +165,7 @@ GeneralizedTCR.RequestEvidenceGroupID.handlerWithLoader({
       hasPaidRequester: true,
     });
     context.Request.set(request);
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);

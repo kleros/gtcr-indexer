@@ -1,4 +1,4 @@
-import { GeneralizedTCR } from "generated";
+import { indexer, GeneralizedTCR } from "envio";
 import {
   getStatus,
   ONE,
@@ -13,8 +13,10 @@ import { arbitratorDisputeIDToItem } from "../../utils/contract/classic/arbitrat
 import { getSubmissionChallengeBaseDeposit } from "../../utils/contract/classic/getSubmissionChallengeBaseDeposit";
 import { getRemovalChallengeBaseDeposit } from "../../utils/contract/classic/getRemovalChallengeBaseDeposit";
 
-GeneralizedTCR.Dispute.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "GeneralizedTCR", event: "Dispute" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const itemID = await context.effect(arbitratorDisputeIDToItem, {
       contractAddress: event.srcAddress,
       chainId: event.chainId,
@@ -127,6 +129,7 @@ GeneralizedTCR.Dispute.handlerWithLoader({
     );
 
     context.Round.set(newRound);
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);

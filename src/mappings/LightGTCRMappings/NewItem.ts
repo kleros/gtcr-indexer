@@ -1,4 +1,4 @@
-import { ItemProp, LightGeneralizedTCR, LItem } from "generated";
+import { indexer, ItemProp, LightGeneralizedTCR, LItem } from "envio";
 import {
   extractPath,
   JSONValueToBool,
@@ -16,8 +16,10 @@ import { fetchItemData } from "../../utils/ipfs/fetchItemData";
 //
 // Accounting for items added or removed directly is done
 // inside handleStatusUpdated.
-LightGeneralizedTCR.NewItem.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "NewItem" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const ipfsHash = extractPath(event.params._data);
 
     const [registry, itemMetadata] = await Promise.all([
@@ -105,6 +107,7 @@ LightGeneralizedTCR.NewItem.handlerWithLoader({
     }
 
     context.LItem.set({ ...item, key0, key1, key2, key3, key4, keywords });
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);

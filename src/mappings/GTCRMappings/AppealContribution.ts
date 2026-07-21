@@ -1,8 +1,10 @@
-import { GeneralizedTCR } from "generated";
+import { indexer, GeneralizedTCR } from "envio";
 import { REQUESTER_CODE } from "../../utils";
 
-GeneralizedTCR.AppealContribution.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "GeneralizedTCR", event: "AppealContribution" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const graphItemID =
       event.params._itemID + "@" + event.srcAddress.toLowerCase();
 
@@ -48,6 +50,7 @@ GeneralizedTCR.AppealContribution.handlerWithLoader({
         feeRewards: round.feeRewards + amountPaidChallenger,
       });
     }
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);

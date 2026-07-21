@@ -1,9 +1,9 @@
 import { ZERO_ADDRESS } from "..";
 import { getClient } from "../client";
 import { getLGTCRContract } from "./contracts";
-import { experimental_createEffect, S } from "envio";
+import { createEffect, S } from "envio";
 
-export const arbitratorDisputeIDToItemID = experimental_createEffect(
+export const arbitratorDisputeIDToItemID = createEffect(
   {
     name: "arbitratorDisputeIDToItemID",
     input: {

@@ -75,7 +75,7 @@ contracts:
         field_selection:
           transaction_fields:
             - hash
-networks:
+chains:
   - id: 100
     start_block: 16969180
     contracts:
@@ -119,4 +119,3 @@ networks:
       - name: GeneralizedTCR
       - name: IArbitrator
 
-unordered_multichain_mode: true

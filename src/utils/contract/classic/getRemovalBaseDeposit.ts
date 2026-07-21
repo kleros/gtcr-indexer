@@ -1,8 +1,8 @@
-import { experimental_createEffect, S } from "envio";
+import { createEffect, S } from "envio";
 import { getGTCRContract } from "../contracts";
 import { getClient } from "../../client";
 
-export const getRemovalBaseDeposit = experimental_createEffect(
+export const getRemovalBaseDeposit = createEffect(
   {
     name: "Classic-removalBaseDeposit",
     input: {

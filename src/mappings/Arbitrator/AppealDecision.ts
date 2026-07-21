@@ -1,16 +1,13 @@
-import {
-  handlerContext,
-  IArbitrator,
-  IArbitrator_AppealDecision_event,
-  LRegistry,
-} from "generated";
+import { indexer, EvmOnEventContext, IArbitrator, IArbitrator_AppealDecision_event, LRegistry } from "envio";
 import { ONE } from "../../utils";
 import { arbitratorDisputeIDToItem } from "../../utils/contract/classic/arbitratorDisputeIDToItem";
 import { arbitratorDisputeIDToItemID } from "../../utils/contract/arbitratorDisputeIDToItemID";
 import { buildNewRound } from "../helpers/buildRound";
 
-IArbitrator.AppealDecision.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "IArbitrator", event: "AppealDecision" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const [registry, lregistry] = await Promise.all([
       context.Registry.get(event.params._arbitrable.toLowerCase()),
       context.LRegistry.get(event.params._arbitrable.toLowerCase()),
@@ -24,12 +21,13 @@ IArbitrator.AppealDecision.handlerWithLoader({
     else if (lregistry) {
       await handleLightAppealDecision(context, event, lregistry);
     }
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);
 
 const handlerClassicAppealDecision = async (
-  context: handlerContext,
+  context: EvmOnEventContext,
   event: IArbitrator_AppealDecision_event
 ) => {
   const itemID = await context.effect(arbitratorDisputeIDToItem, {
@@ -74,7 +72,7 @@ const handlerClassicAppealDecision = async (
 };
 
 const handleLightAppealDecision = async (
-  context: handlerContext,
+  context: EvmOnEventContext,
   event: IArbitrator_AppealDecision_event,
   registry: LRegistry
 ) => {
