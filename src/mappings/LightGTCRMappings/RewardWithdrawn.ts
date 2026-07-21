@@ -1,7 +1,9 @@
-import { LightGeneralizedTCR } from "generated";
+import { indexer, LightGeneralizedTCR } from "envio";
 
-LightGeneralizedTCR.RewardWithdrawn.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "RewardWithdrawn" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     try {
       const graphItemID =
         event.params._itemID + "@" + event.srcAddress.toLowerCase();
@@ -27,7 +29,7 @@ LightGeneralizedTCR.RewardWithdrawn.handlerWithLoader({
       }
       context.log.error(`${error}`);
     }
-  },
+  })({ event, context });
 
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  }
+);

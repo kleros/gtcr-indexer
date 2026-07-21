@@ -1,7 +1,9 @@
-import { LightGTCRFactory } from "generated";
+import { indexer, LightGTCRFactory } from "envio";
 import { createRegistry } from "../helpers/createLightRegistry";
 
-LightGTCRFactory.NewGTCR.handler(async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGTCRFactory", event: "NewGTCR" },
+  async ({ event, context }) => {
   const registry = await context.LRegistry.get(
     event.params._address.toLowerCase()
   );
@@ -12,9 +14,13 @@ LightGTCRFactory.NewGTCR.handler(async ({ event, context }) => {
   }
 
   return;
-});
+}
+);
 
-LightGTCRFactory.NewGTCR.contractRegister(({ event, context }) => {
-  context.addLightGeneralizedTCR(event.params._address.toLowerCase());
+indexer.contractRegister(
+  { contract: "LightGTCRFactory", event: "NewGTCR" },
+  async ({ event, context }) => {
+  context.chain.LightGeneralizedTCR.add(event.params._address.toLowerCase());
   context.log.info(`Registered new Light Registry at ${event.params._address}`);
-});
+}
+);

@@ -1,4 +1,4 @@
-import { experimental_createEffect, S } from "envio";
+import { createEffect, S } from "envio";
 import { tryFetchIpfsFile } from ".";
 
 const itemMetadataSchema = S.schema({
@@ -20,7 +20,7 @@ const itemMetadataSchema = S.schema({
  * @param ipfsHash CID of the ipfs file
  * @example uri https://ipfs.io/ipfs/QmS6iwbxLzCUZuMiRxjpbeAuZUU4BkfXaf6knvXVKJtMK4/item.json
  */
-export const fetchItemData = experimental_createEffect(
+export const fetchItemData = createEffect(
   {
     name: "fetchItemData",
     input: {

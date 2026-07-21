@@ -1,4 +1,4 @@
-import { LRound, Round } from "generated";
+import { LRound, Round } from "envio";
 import { NONE, ZERO } from "../../utils";
 
 export function buildNewRound(

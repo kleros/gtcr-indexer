@@ -1,11 +1,13 @@
-import { GeneralizedTCR } from "generated";
+import { indexer, GeneralizedTCR } from "envio";
 import { ONE, REQUESTER_CODE } from "../../utils";
 import { getRequestInfo } from "../../utils/contract/getRequestInfo";
 import { getAppealCost } from "../../utils/contract/classic/getAppealCost";
 import { buildNewClassicRound } from "../helpers/buildRound";
 
-GeneralizedTCR.HasPaidAppealFee.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "GeneralizedTCR", event: "HasPaidAppealFee" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const graphItemID =
       event.params._itemID + "@" + event.srcAddress.toLowerCase();
 
@@ -91,6 +93,7 @@ GeneralizedTCR.HasPaidAppealFee.handlerWithLoader({
       timestamp: BigInt(event.block.timestamp),
       side: event.params._side,
     });
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);

@@ -1,4 +1,4 @@
-import { LightGeneralizedTCR, LRegistry } from "generated";
+import { indexer, LightGeneralizedTCR, LRegistry } from "envio";
 import {
   extractPath,
   JSONValueToBool,
@@ -8,8 +8,10 @@ import {
 import { getArbitrator } from "../../utils/contract/getArbitrator";
 import { fetchRegistryMetadata } from "../../utils/ipfs/fetchRegistryMetadata";
 
-LightGeneralizedTCR.MetaEvidence.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "MetaEvidence" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const ipfsHash = extractPath(event.params._evidence);
     const [registry, registryMetadata] = await Promise.all([
       context.LRegistry.get(event.srcAddress.toLowerCase()),
@@ -67,12 +69,13 @@ LightGeneralizedTCR.MetaEvidence.handlerWithLoader({
     };
 
     context.LRegistry.set(updatedRegistry);
-  },
+  })({ event, context });
 
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  }
+);
 
-LightGeneralizedTCR.MetaEvidence.contractRegister(
+indexer.contractRegister(
+  { contract: "LightGeneralizedTCR", event: "MetaEvidence" },
   async ({ context, event }) => {
     const arbitratorAddr = await getArbitrator({
       input: {
@@ -83,7 +86,7 @@ LightGeneralizedTCR.MetaEvidence.contractRegister(
       context,
     });
 
-    context.addIArbitrator(arbitratorAddr.toLowerCase());
+    context.chain.IArbitrator.add(arbitratorAddr.toLowerCase());
     context.log.info(
       `Registered new Light Arbitrator at ${arbitratorAddr} for ${event.srcAddress}`
     );

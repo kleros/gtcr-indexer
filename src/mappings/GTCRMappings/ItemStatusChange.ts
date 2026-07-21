@@ -1,10 +1,12 @@
-import { GeneralizedTCR } from "generated";
+import { indexer, GeneralizedTCR } from "envio";
 import { getFinalRuling, getStatus } from "../../utils";
 import { getRequestInfo } from "../../utils/contract/getRequestInfo";
 import { getItemInfo } from "../../utils/contract/classic/getItemInfo";
 
-GeneralizedTCR.ItemStatusChange.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "GeneralizedTCR", event: "ItemStatusChange" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     if (event.params._resolved === false) return;
 
     const graphItemID =
@@ -54,6 +56,7 @@ GeneralizedTCR.ItemStatusChange.handlerWithLoader({
       disputeOutcome: getFinalRuling(requestInfo.ruling),
       resolutionTx: event.transaction.hash,
     });
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);

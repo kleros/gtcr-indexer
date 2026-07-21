@@ -1,9 +1,9 @@
-import { experimental_createEffect, S } from "envio";
+import { createEffect, S } from "envio";
 import { getArbitratorContract } from "../contracts";
 import { getClient } from "../../client";
 import { ZERO } from "../..";
 
-export const getAppealCost = experimental_createEffect(
+export const getAppealCost = createEffect(
   {
     name: "Classic-appealCost",
     input: {

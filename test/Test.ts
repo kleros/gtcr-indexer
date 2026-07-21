@@ -1,8 +1,5 @@
 // import assert from "assert";
-// import {
-//   TestHelpers,
-//   LightGTCRFactory_NewGTCR
-// } from "generated";
+// 
 // const { MockDb, LightGTCRFactory } = TestHelpers;
 
 // describe("LightGTCRFactory contract NewGTCR event tests", () => {

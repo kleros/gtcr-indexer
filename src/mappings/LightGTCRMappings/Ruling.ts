@@ -1,9 +1,11 @@
-import { LightGeneralizedTCR } from "generated";
+import { indexer, LightGeneralizedTCR } from "envio";
 import { arbitratorDisputeIDToItemID } from "../../utils/contract/arbitratorDisputeIDToItemID";
 import { ONE } from "../../utils";
 
-LightGeneralizedTCR.Ruling.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "Ruling" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     try {
       const itemID = await context.effect(arbitratorDisputeIDToItemID, {
         contractAddress: event.srcAddress,
@@ -32,7 +34,7 @@ LightGeneralizedTCR.Ruling.handlerWithLoader({
       }
       context.log.error(`${error}`);
     }
-  },
+  })({ event, context });
 
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  }
+);

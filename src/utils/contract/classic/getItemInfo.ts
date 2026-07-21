@@ -1,9 +1,9 @@
-import { experimental_createEffect, S } from "envio";
+import { createEffect, S } from "envio";
 import { getGTCRContract } from "../contracts";
 import { getClient } from "../../client";
 import { ZERO_ADDRESS } from "../..";
 
-export const getItemInfo = experimental_createEffect(
+export const getItemInfo = createEffect(
   {
     name: "Classic-getItemInfo",
     input: {

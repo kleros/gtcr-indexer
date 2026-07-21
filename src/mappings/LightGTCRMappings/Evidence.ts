@@ -1,9 +1,11 @@
-import { Evidence, LightGeneralizedTCR } from "generated";
+import { indexer, Evidence, LightGeneralizedTCR } from "envio";
 import { extractPath, ONE, ZERO } from "../../utils";
 import { fetchEvidenceData } from "../../utils/ipfs/fetchEvidenceData";
 
-LightGeneralizedTCR.Evidence.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "Evidence" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const evidenceGroupID =
       event.params._evidenceGroupID.toString() +
       "@" +
@@ -40,6 +42,7 @@ LightGeneralizedTCR.Evidence.handlerWithLoader({
       numberOfEvidence: evidenceGroup.numberOfEvidence + ONE,
     });
     context.Evidence.set(evidence);
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);

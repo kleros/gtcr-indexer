@@ -1,10 +1,12 @@
-import { GeneralizedTCR } from "generated";
+import { indexer, GeneralizedTCR } from "envio";
 import { ONE } from "../../utils";
 import { getArbitratorClassic } from "../../utils/contract/classic/getArbitrator";
 import { createRegistry } from "../helpers/createClassicRegistry";
 
-GeneralizedTCR.MetaEvidence.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "GeneralizedTCR", event: "MetaEvidence" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     let registry = await context.Registry.get(event.srcAddress.toLowerCase());
 
     // during deployment of Registry, MetaEvidence is processed before NewGTCR. So Registry can be undefined, in that case create a new one.
@@ -40,12 +42,14 @@ GeneralizedTCR.MetaEvidence.handlerWithLoader({
         ? registry.clearingMetaEvidence_id
         : metaEvidence.id,
     });
-  },
+  })({ event, context });
 
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  }
+);
 
-GeneralizedTCR.MetaEvidence.contractRegister(async ({ context, event }) => {
+indexer.contractRegister(
+  { contract: "GeneralizedTCR", event: "MetaEvidence" },
+  async ({ context, event }) => {
   const arbitratorAddr = await getArbitratorClassic({
     input: {
       contractAddress: event.srcAddress,
@@ -55,8 +59,9 @@ GeneralizedTCR.MetaEvidence.contractRegister(async ({ context, event }) => {
     context,
   });
 
-  context.addIArbitrator(arbitratorAddr.toLowerCase());
+  context.chain.IArbitrator.add(arbitratorAddr.toLowerCase());
   context.log.info(
     `Registered new Arbitrator at ${arbitratorAddr} for ${event.srcAddress}`
   );
-});
+}
+);

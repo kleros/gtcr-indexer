@@ -1,4 +1,4 @@
-import { LightGeneralizedTCR, LItem, LRequest } from "generated";
+import { indexer, LightGeneralizedTCR, LItem, LRequest } from "envio";
 import {
   getExtendedStatus,
   getStatus,
@@ -15,8 +15,10 @@ import { getSubmissionBaseDeposit } from "../../utils/contract/getSubmissionBase
 import { updateCounters } from "../helpers/updateCounters";
 import { buildNewRound } from "../helpers/buildRound";
 
-LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
-  loader: async ({ event, context }) => {
+indexer.onEvent(
+  { contract: "LightGeneralizedTCR", event: "RequestSubmitted" },
+  async ({ event, context }) => {
+    const loaderReturn = await (async ({ event, context }) => {
     const graphItemID =
       event.params._itemID + "@" + event.srcAddress.toLowerCase();
 
@@ -156,6 +158,7 @@ LightGeneralizedTCR.RequestSubmitted.handlerWithLoader({
     context.LRequest.set(request);
     context.LItem.set(updatedItem);
     context.LRound.set(round);
-  },
-  handler: async ({ event, context, loaderReturn }) => {},
-});
+  })({ event, context });
+
+  }
+);

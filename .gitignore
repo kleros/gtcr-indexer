@@ -36,3 +36,4 @@ logs
 build
 .env
 debug.log
+.envio/

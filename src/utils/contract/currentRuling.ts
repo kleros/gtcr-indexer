@@ -1,9 +1,9 @@
 import { ZERO } from "..";
 import { getClient } from "../client";
 import { getArbitratorContract } from "./contracts";
-import { experimental_createEffect, S } from "envio";
+import { createEffect, S } from "envio";
 
-export const currentRuling = experimental_createEffect(
+export const currentRuling = createEffect(
   {
     name: "currentRuling",
     input: {
